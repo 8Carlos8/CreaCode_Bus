@@ -202,6 +202,63 @@ public function verifyEmail(Request $request)
         return response()->json(['message' => 'Sesión cerrada con éxito']);
     }
 
+    public function solicitarContraseña(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        // Buscar el usuario por email
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'El correo no está registrado.'], 404);
+        }
+
+        // Generar un código de verificación de 6 dígitos
+        $codigo = rand(100000, 999999);
+
+        // Guardar el código en la base de datos (campo `codigo_verificacion`)
+        $user->codigo_verificacion = $codigo;
+        $user->save();
+
+        // Enviar el correo con el código de recuperación
+        Mail::raw("Tu código de recuperación es: $codigo", function ($message) use ($user) {
+            $message->to($user->email)
+                    ->subject('Recuperación de contraseña');
+        });
+
+        return response()->json(['message' => 'Se ha enviado un correo con el código de recuperación.'], 200);
+    }
+
+    public function cambiarContraseña(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'codigo_verificacion' => 'required|numeric',
+            'new_password' => 'required|string|min:12',
+        ]);
+
+        // Buscar el usuario
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'Usuario no encontrado.'], 404);
+        }
+
+        // Validar que el código de verificación sea correcto
+        if ($user->codigo_verificacion != $request->codigo_verificacion) {
+            return response()->json(['message' => 'Código de verificación incorrecto.'], 400);
+        }
+
+        // Actualizar la contraseña
+        $user->password = Hash::make($request->new_password);
+        $user->codigo_verificacion = null; // Limpiar el código de verificación
+        $user->save();
+
+        return response()->json(['message' => 'Contraseña actualizada con éxito.'], 200);
+    }
+
     public function update(Request $request)
     {
         $user = User::find($request->input('id'));
