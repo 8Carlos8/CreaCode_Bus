@@ -36,7 +36,7 @@ function login(email, password) {
                 } else if (rol === 3) {
                     window.location.href = "vistas/admin/indexO.html";
                 } else {
-                    window.location.href = "vistas/user/inicio.html";
+                    window.location.href = "../usuario/inicio.html";
                 }
             } else {
                 console.error("Error al iniciar sesión:", data.message);

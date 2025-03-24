@@ -60,7 +60,7 @@
             if (response.ok) {
                 mensaje.innerHTML = "Contraseña actualizada con éxito. Puedes iniciar sesión.";
                 mensaje.style.color = "green";
-                setTimeout(() => window.location.href = "login.html", 3000);
+                setTimeout(() => window.location.href = "../sesion/login.html", 3000);
             } else {
                 mensaje.innerHTML = data.message;
                 mensaje.style.color = "red";

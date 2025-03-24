@@ -1,8 +1,21 @@
 function logout() {
+    // Evento para el botón de cerrar sesión
+document.addEventListener("DOMContentLoaded", function () {
+    const logoutButton = document.getElementById("logoutButton");
+    if (logoutButton) {
+        logoutButton.addEventListener("click", function (event) {
+            event.preventDefault();
+            logout();
+        });
+    } else {
+        console.error("El botón de cerrar sesión no se encontró en el DOM.");
+    }
+});
+
     const token = localStorage.getItem('token');
     if (!token) {
         alert("No hay token almacenado. Redirigiendo al inicio de sesión.");
-        window.location.href = "../../index.html";
+        window.location.href = "../sesion/login.html";
         return;
     }
     fetch(apiUrl + '/api/logout', {
@@ -25,7 +38,7 @@ function logout() {
                 localStorage.removeItem("idBoleto");
                 localStorage.removeItem("idUsEd");
                 localStorage.removeItem("idUsV");
-                window.location.href = "../usuario/login.html";
+                window.location.href = "../sesion/login.html";
             } else {
                 console.error();
             }
@@ -35,15 +48,3 @@ function logout() {
         });
 }
 
-// Evento para el botón de cerrar sesión
-document.addEventListener("DOMContentLoaded", function () {
-    const logoutButton = document.getElementById("logoutButton");
-    if (logoutButton) {
-        logoutButton.addEventListener("click", function (event) {
-            event.preventDefault();
-            logout();
-        });
-    } else {
-        console.error("El botón de cerrar sesión no se encontró en el DOM.");
-    }
-});
