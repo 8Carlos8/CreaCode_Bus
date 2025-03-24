@@ -1,14 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>
-        Autobuses
-    </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Autobuses</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-    <iframe src="../admin/Autobuses.html" width="1520" height="700" style="border:1px"></iframe>
-    <li class="nav__item">
-        <a class="nav__link" href="./menu.html">Inicio</a>
-      </li>
+    <header class="header">
+        <img class="header__logo" src="../ADO-Autobuses-de-Oriente-Logo-700x394.png" alt="ADO Logo">
+        <nav class="nav">
+            <ul class="nav__list">
+                <li class="nav__item">
+                    <a class="nav__link" href="menu.html">Inicio</a>
+                </li>
+                <li class="nav__item">
+                    <a class="nav__link" href="../sesion/login.html">Cerrar Sesión</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main">
+        <section class="bus-list">
+            <h2 class="bus-list__title">Lista de Autobuses</h2>
+            <ul class="bus-list__items">
+            <ul class="bus-list__items">
+                <li class="bus-list__item">
+                    <div class="bus-list__details">
+                        <i class="fas fa-bus bus-list__icon"></i>
+                        <span class="bus-list__number">Autobús #123</span>
+                        <span class="bus-list__line">Línea: ADO GL</span>
+                    </div>
+                </li>
+
+           
+            </ul>
+        </section>
+    </main>
 </body>
 </html>
