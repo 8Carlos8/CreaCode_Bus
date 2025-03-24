@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro ADO</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -86,35 +87,52 @@
 <div class="logo">
     <img src="../ADO-Autobuses-de-Oriente-Logo-700x394.png" alt="ADO Logo">
 </div>
-
 <div class="form-container">
-    <form>
+    <form onsubmit="return validarCaptcha()">
         <label for="nombre">Nombre</label>
-        <input type="text" id="nombre" placeholder="Nombre">
+        <input type="text" id="nombre" placeholder="Nombre" required>
         
         <label for="apellido-paterno">Apellido Paterno</label>
-        <input type="text" id="apellido-paterno" placeholder="Apellido Paterno">
+        <input type="text" id="apellido-paterno" placeholder="Apellido Paterno" required>
 
-        <label for="apellido-paterno">Apellido Materno</label>
-        <input type="text" id="apellido-materno" placeholder="Apellido Materno">
+        <label for="apellido-materno">Apellido Materno</label>
+        <input type="text" id="apellido-materno" placeholder="Apellido Materno" required>
         
         <label for="telefono">Teléfono</label>
-        <input type="text" id="telefono" placeholder="Teléfono">
+        <input type="text" id="telefono" placeholder="Teléfono" required>
         
         <label for="email">Email</label>
-        <input type="email" id="email" placeholder="Email">
+        <input type="email" id="email" placeholder="Email" required>
         
         <label for="password">Password</label>
         <input type="password" id="password" placeholder="Password">
         <ul id="password-error-list" style="color: red; font-size: 12px; list-style-type: disc; padding-left: 20px;"></ul>
         
+        <!-- CAPTCHA de Google -->
+        <div class="g-recaptcha" data-sitekey="6LfFXM8qAAAAAAicnAmq9BR4w5Zu8veScPvW_IMi"></div>
+
         <button type="submit">Registrarte</button>
     </form>
 </div>
 
 <div class="footer">
-  
+    <!-- Aquí puedes añadir enlaces, si es necesario -->
 </div>
+
+<script>
+    // Función de validación del reCAPTCHA
+    function validarCaptcha() {
+        const respuesta = grecaptcha.getResponse();
+        if (respuesta.length === 0) {
+            alert("Por favor, verifica que no eres un robot.");
+            return false; // No enviamos el formulario si el CAPTCHA no está validado
+        }
+        return true; // Si el CAPTCHA es validado, el formulario se envía
+    }
+</script>
+
+</body>
+</html>
 
     <script src="../apis/registro.js"></script>
 </body>
