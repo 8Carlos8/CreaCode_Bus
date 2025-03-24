@@ -2,7 +2,6 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <script src="../apis/registro.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro ADO</title>
     <style>
@@ -107,6 +106,7 @@
         
         <label for="password">Password</label>
         <input type="password" id="password" placeholder="Password">
+        <ul id="password-error-list" style="color: red; font-size: 12px; list-style-type: disc; padding-left: 20px;"></ul>
         
         <button type="submit">Registrarte</button>
     </form>
@@ -116,5 +116,6 @@
   
 </div>
 
+    <script src="../apis/registro.js"></script>
 </body>
 </html>

@@ -121,5 +121,35 @@
         <p>© 2024 ADO. Todos los derechos reservados.</p>
     </div>
 </body>
-<script src="../apis/sesion.js"></script>
+    <script src="../apis/sesion.js"></script>
+    <script>
+        // Deshabilitar clic derecho
+        document.addEventListener("contextmenu", (e) => e.preventDefault());
+
+        // Deshabilitar teclas como F12, Ctrl+Shift+I, Ctrl+U
+        document.addEventListener("keydown", (e) => {
+        if (e.key === "F12" || (e.ctrlKey && e.shiftKey && e.key === "I") || (e.ctrlKey && e.key === "U")) {
+            e.preventDefault();
+        }
+        });
+
+        // Verificar si se abre el inspector
+        let devtoolsOpened = false;
+
+        const detectDevTools = () => {
+        const devtoolsCheck = new Function("debugger;");
+        try {
+            devtoolsCheck();
+        } catch (e) {
+            devtoolsOpened = true;
+        }
+
+        if (devtoolsOpened) {
+            alert("El inspector está activado. Por seguridad, se cerrará la sesión.");
+            window.location.href = "error.html"; // Redirige a una página de error o cierra sesión
+        }
+        };
+
+        setInterval(detectDevTools, 1000);
+    </script>
 </html>
