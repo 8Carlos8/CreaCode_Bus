@@ -23,7 +23,7 @@ Route::post('/corrida/update', [CorridaController::class, 'update']);
 Route::post('/corrida/delete', [CorridaController::class, 'delete']);
 Route::post('/corrida/view', [CorridaController::class, 'view']);
 Route::post('/corrida/detalles', [CorridaController::class, 'detallesCorrida']);
-
+Route::post('/corrida/search', [CorridaController::class, 'search']);
 
 Route::post('/comprar-boleto', [BoletoController::class, 'comprarBoleto']);
 Route::post('/cancelar-boleto', [BoletoController::class, 'cancelarBoleto']);
@@ -32,8 +32,6 @@ Route::post('/visualizar-boletos', [BoletoController::class, 'visualizarBoletos'
 Route::post('/registrar-incidente', [IncidenteController::class, 'registrarIncidente']);
 // Asegúrate de que no esté dentro de un grupo con autenticación
 Route::post('/register', [UserController::class, 'register'])->withoutMiddleware('auth:sanctum');
-Route::post('/solicitarContraseña', [UserController::class, 'solicitarContraseña']);
-Route::post('/cambiarContraseña', [UserController::class, 'cambiarContraseña']);
 
 
 

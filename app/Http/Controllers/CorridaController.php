@@ -111,6 +111,60 @@ class CorridaController extends Controller
         return response()->json(['corrida' => $corrida], 200);
     }
     
+    public function search(Request $request)
+    {
+        $token = $request->input('token');
+        if (!$this->validateToken($token)) {
+            return response()->json(['message' => 'Token inválido'], 401);
+        }
+
+        $query = Corrida::query();
+
+        if ($request->has('origen')) {
+            $query->where('origen', 'like', '%' . $request->input('origen') . '%');
+        }
+        if ($request->has('destino')) {
+            $query->where('destino', 'like', '%' . $request->input('destino') . '%');
+        }
+        if ($request->has('fecha')) {
+            $query->where('fecha', $request->input('fecha'));
+        }
+        if ($request->has('fecha_inicio')) {  // Búsqueda por rango de fechas
+           $query->where('fecha', '>=', $request->input('fecha_inicio'));
+        }
+        if ($request->has('fecha_fin')) {
+            $query->where('fecha', '<=', $request->input('fecha_fin'));
+        }
+        if ($request->has('hora_salida')) {
+            $query->where('hora_salida', $request->input('hora_salida'));
+        }
+           if ($request->has('hora_salida_inicio')) { //Rango de horas
+            $query->where('hora_salida', '>=', $request->input('hora_salida_inicio'));
+        }
+         if ($request->has('hora_salida_fin')) {
+            $query->where('hora_salida', '<=', $request->input('hora_salida_fin'));
+        }
+
+        if ($request->has('precio_minimo')) {
+            $query->where('precio', '>=', $request->input('precio_minimo'));
+        }
+        if ($request->has('precio_maximo')) {
+            $query->where('precio', '<=', $request->input('precio_maximo'));
+        }
+
+         if ($request->has('tipo_corrida')) {
+            $query->where('tipo_corrida', $request->input('tipo_corrida'));
+        }
+        if ($request->has('id_autobus')) {
+             $query->where('id_autobus', $request->input('id_autobus'));
+        }
+
+
+        $corridas = $query->get();  // Ejecuta la consulta y obtiene los resultados
+
+        return response()->json(['corridas' => $corridas]);
+    }
+
     private function validateToken($token)
     {
         $accessToken = PersonalAccessToken::findToken($token);
