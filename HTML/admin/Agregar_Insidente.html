@@ -3,102 +3,60 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Incidentes</title>
+  <title>Agregar Incidente</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <header class="header">
+        <img class="header__logo" src="../ADO-Autobuses-de-Oriente-Logo-700x394.png" alt="ADO Logo">
+        <nav class="nav">
+            <ul class="nav__list">
+                <li class="nav__item">
+                    <a class="nav__link" href="index1.html">Inicio</a>
+                </li>
+                <li class="nav__item">
+                    <a class="nav__link" href="../sesion/login.html">Cerrar Sesión</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
 </head>
 <body>
   <main class="main">
-    <section class="incidentes">
-      <h1 class="incidentes__title">Lista de Incidentes</h1>
-      <button id="agregarIncidenteBtn" class="incidentes__agregar-btn">Agregar Incidente</button>
-      <div class="table-container">  
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Descripción</th>
-              <th>Fecha</th>
-              <th>Ubicación</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>Choque leve en la carretera</td>
-              <td>2023-10-26</td>
-              <td>Km 25, Carretera México-Puebla</td>
-              <td>
-                <button class="data-table__button data-table__button--edit">Editar</button>
-                <button class="data-table__button data-table__button--delete">Eliminar</button>
-              </td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Retraso por manifestación</td>
-              <td>2023-10-25</td>
-              <td>Entrada a la Ciudad de México</td>
-              <td>
-                <button class="data-table__button data-table__button--edit">Editar</button>
-                <button class="data-table__button data-table__button--delete">Eliminar</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div id="agregarIncidenteForm" class="incidentes__form-container" style="display: none;">
-        <form class="incidentes__form">
-          <label for="descripcion">Descripción:</label>
-          <textarea id="descripcion" name="descripcion" required></textarea>
-          <label for="fecha">Fecha:</label>
-          <input type="date" id="fecha" name="fecha" required>
-          <label for="ubicacion">Ubicación:</label>
-          <input type="text" id="ubicacion" name="ubicacion" required>
-          <button type="submit" class="incidentes__guardar-btn">Guardar</button>
-        </form>
-      </div>
+    <section class="add-incident-form">
+      <h1 class="add-incident-form__title">Agregar Nuevo Incidente</h1>
+      <form class="add-incident-form__form">
+        <label for="autobusId">ID de Autobús:</label>
+        <input type="number" id="autobusId" name="autobusId" required>
+
+        <label for="corridaId">ID de Corrida:</label>
+        <input type="number" id="corridaId" name="corridaId" required>
+
+        <label for="tipoIncidente">Tipo de Incidente:</label>
+        <select id="tipoIncidente" name="tipoIncidente" required>
+          <option value="">Seleccione un tipo</option>
+          <option value="accidente">Accidente</option>
+          <option value="retraso">Retraso</option>
+          <option value="averia">Avería</option>
+          <option value="otro">Otro</option>
+        </select>
+
+        <label for="descripcion">Descripción:</label>
+        <textarea id="descripcion" name="descripcion" required></textarea>
+
+        <label for="evidencia">Evidencia (Foto):</label>
+        <input type="file" id="evidencia" name="evidencia" accept="image/*">
+
+        <label for="tiempoRetraso">Tiempo de Retraso Estimado (minutos):</label>
+        <input type="number" id="tiempoRetraso" name="tiempoRetraso">
+
+        <label for="fecha">Fecha:</label>
+        <input type="date" id="fecha" name="fecha" required>
+
+        <button type="submit" class="add-incident-form__submit-btn">Guardar Incidente</button>
+      </form>
     </section>
   </main>
-  <script >
-    document.addEventListener('DOMContentLoaded', function() {
-  const agregarIncidenteBtn = document.getElementById('agregarIncidenteBtn');
-  const agregarIncidenteForm = document.getElementById('agregarIncidenteForm');
-
-  agregarIncidenteBtn.addEventListener('click', function() {
-    agregarIncidenteForm.style.display = 'block';
-  });
-
-  agregarIncidenteForm.addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    // Obtener los valores del formulario
-    const descripcion = document.getElementById('descripcion').value;
-    const fecha = document.getElementById('fecha').value;
-    const ubicacion = document.getElementById('ubicacion').value;
-
-    // Crear una nueva fila en la tabla
-    const newRow = document.createElement('tr');
-    newRow.innerHTML = `
-      <td>${document.querySelectorAll('.data-table tbody tr').length + 1}</td>
-      <td>${descripcion}</td>
-      <td>${fecha}</td>
-      <td>${ubicacion}</td>
-      <td>
-        <button class="data-table__button data-table__button--edit">Editar</button>
-        <button class="data-table__button data-table__button--delete">Eliminar</button>
-      </td>
-    `;
-
-    // Agregar la nueva fila a la tabla
-    document.querySelector('.data-table tbody').appendChild(newRow);
-
-    // Limpiar el formulario y ocultarlo
-    document.getElementById('descripcion').value = '';
-    document.getElementById('fecha').value = '';
-    document.getElementById('ubicacion').value = '';
-    agregarIncidenteForm.style.display = 'none';
-  });
-});
-  </script>
 </body>
 </html>
