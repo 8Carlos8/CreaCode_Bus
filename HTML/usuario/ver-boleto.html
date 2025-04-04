@@ -4,172 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ver Boleto</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #fff;
-    }
-    .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  background-color: #FCF0E3;
-}
-
-.header img {
-  max-width: 100px;
-  margin-right: auto;
-  padding: 0px 100px;
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.nav-links a {
-  color: #333;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.nav-links a:hover {
-  text-decoration: underline;
-}
-
-/* Dropdown Menu para Boletos */
-.dropdown {
-  position: relative;
-}
-
-.dropbtn {
-  color: #333;
-  font-size: 16px;
-  font-weight: bold;
-  text-decoration: none;
-  cursor: pointer;
-  padding: 10px;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  min-width: 200px;
-  z-index: 1000;
-}
-
-.dropdown-content a {
-  display: block;
-  padding: 10px 15px;
-  color: #333;
-  text-decoration: none;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
-}
-
-.dropdown-content a:hover {
-  background-color: #f0f0f0;
-}
-
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
-/* Botón de cerrar sesión */
-.logout-button {
-  background-color: #f28b82;
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 5px;
-  text-decoration: none;
-  display: inline-block;
-  cursor: pointer;
-  font-size: 16px;
-  text-align: center;
-}
-
-.logout-button:hover {
-  background-color: #e57373;
-}
-
-    main {
-      max-width: 800px;
-      margin: 40px auto;
-      text-align: center;
-    }
-    h1 {
-      color: #d93636;
-      font-size: 24px;
-      margin-bottom: 20px;
-    }
-    .form-container {
-      background-color: #fff;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    .form-container label {
-      font-weight: bold;
-      color: #d93636;
-      display: block;
-      text-align: left;
-      margin-bottom: 5px;
-    }
-    .form-container input {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border: 1px solid #d93636;
-      border-radius: 4px;
-    }
-    .form-container button {
-      background-color: #d93636;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .form-container button:hover {
-      background-color: #b22424;
-    }
-    footer {
-      background-color: #fef6ef;
-      padding: 20px;
-      text-align: center;
-      border-top: 1px solid #ddd;
-    }
-    footer .footer-content {
-      display: flex;
-      justify-content: space-between;
-      max-width: 800px;
-      margin: 0 auto;
-      font-size: 12px;
-    }
-    footer .footer-content div {
-      flex: 1;
-      text-align: center;
-    }
-    footer .social-icons img {
-      width: 24px;
-      margin: 0 5px;
-    }
-  </style>
+<link rel="stylesheet" href="../estilos.css">
 </head>
 <body>
     <div class="header">
-        <img src="../img/ADO-Autobuses-de-Oriente-Logo-700x394.png" alt="ADO Logo">
+        <img src="../ADO-Autobuses-de-Oriente-Logo-700x394.png" alt="ADO Logo">
         <div class="nav-links">
           <a href="../usuario/inicio.html">Inicio</a>
       
@@ -193,7 +32,7 @@
       
   <main>
     <h1 align="left">Ver Boleto</h1>
-    <div class="form-container">
+    <div class="form-container1">
       <label for="folio">Folio web:</label>
       <input type="text" id="folio" placeholder="Ej: WEB123456/QWB3918727/CLX123456">
       <button>Consultar</button>

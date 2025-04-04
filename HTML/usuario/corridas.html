@@ -4,164 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Corridas Guardadas</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #FFF;
-    }
-    /* Header */
- /* Encabezado */
-/* Header */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  background-color: #FCF0E3;
-}
-
-.header img {
-  max-width: 100px;
-  margin-right: auto;
-  padding: 0px 100px;
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.nav-links a {
-  color: #333;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.nav-links a:hover {
-  text-decoration: underline;
-}
-
-/* Dropdown Menu para Boletos */
-.dropdown {
-  position: relative;
-}
-
-.dropbtn {
-  color: #333;
-  font-size: 16px;
-  font-weight: bold;
-  text-decoration: none;
-  cursor: pointer;
-  padding: 10px;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  min-width: 200px;
-  z-index: 1000;
-}
-
-.dropdown-content a {
-  display: block;
-  padding: 10px 15px;
-  color: #333;
-  text-decoration: none;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
-}
-
-.dropdown-content a:hover {
-  background-color: #f0f0f0;
-}
-
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
-/* Botón de cerrar sesión */
-.logout-button {
-  background-color: #f28b82;
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 5px;
-  text-decoration: none;
-  display: inline-block;
-  cursor: pointer;
-  font-size: 16px;
-  text-align: center;
-}
-
-.logout-button:hover {
-  background-color: #e57373;
-}
-
-
-/* Main Content */
-.main-container {
-  flex: 1;
-  padding: 20px;
-  margin: 10px;
-}
-
-.main-container h1 {
-  font-size: 1.5rem;
-  margin-bottom: 20px;
-}
-
-.corrida {
-  border-bottom: 1px solid #ddd;
-  padding: 20px 0;
-}
-
-.corrida h2 {
-  font-size: 1.2rem;
-  margin: 0;
-}
-
-.corrida p {
-  margin: 10px 0;
-}
-
-.corrida .btn {
-  padding: 10px 20px;
-  background-color: #d21f26;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-    .container {
-      max-width: 800px;
-      margin: 20px auto;
-      padding: 20px;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-    .card {
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      padding: 10px;
-      margin-bottom: 10px;
-    }
-    .card h3 {
-      margin: 0 0 10px;
-    }
-  </style>
+  <link rel="stylesheet" href="../estilos.css">
 </head>
 <body>
   <div class="header">
-    <img src="../img/ADO-Autobuses-de-Oriente-Logo-700x394.png" alt="ADO Logo">
+    <img src="../ADO-Autobuses-de-Oriente-Logo-700x394.png" alt="ADO Logo">
     <div class="nav-links">
       <a href="../usuario/inicio.html">Inicio</a>
   
@@ -174,7 +21,7 @@
       </div>
   
       <!-- Enlace simple para Perfil -->
-      <a href="../usuario/lista-corridas.html"  style="background-color: #f79191" ;>Corridas</a>  <a href="../usuario/perfil.html">Perfil</a>
+      <a href="../usuario/lista-corridas.html">Corridas</a>  <a href="../usuario/perfil.html">Perfil</a>
   
     
       <a href="./index.html" id="logoutButton" name="logoutButton" class="logout-button">Cerrar Sesión</a>

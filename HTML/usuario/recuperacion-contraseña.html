@@ -1,149 +1,42 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro ADO</title>
+    <link rel="stylesheet" href="../estilos.css">
+</head>
+<body>
+
+<div class="logo">
+    <img src="../ADO-Autobuses-de-Oriente-Logo-700x394.png" alt="ADO Logo">
+</div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Recuperar Contraseña</title>
-  <link rel="stylesheet" href="recursos/css/styles.css">
-  <style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        background-color: #f8f1ea;
-    }
-
-    .logo {
-        width: 100%;
-        padding: 20px;
-        text-align: center;
-        background-color: #f8f1ea;
-    }
-
-    .logo img {
-        width: 150px;
-    }
-
-    
-/* Main Content */
-.main-container {
-flex: 1;
-display: flex;
-justify-content: center;
-align-items: center;
-padding: 10px;
-}
-
-.form-container {
-background-color: #fff;
-border: 1px solid #ddd;
-padding: 50px;
-border-radius: 10px;
-width: 100%;
-max-width: 400px;
-text-align: center;
-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.form-container h2 {
-font-size: 1.5rem;
-margin-bottom: 10px;
-}
-
-.form-container p {
-font-size: 1rem;
-margin-bottom: 20px;
-}
-
-.input-group {
-text-align: left;
-margin-bottom: 20px;
-}
-
-.input-group label {
-display: block;
-font-weight: bold;
-margin-bottom: 5px;
-}
-
-.input-group input {
-width: 100%;
-padding: 10px;
-border: 1px solid #ccc;
-border-radius: 5px;
-font-size: 1rem;
-}
-
-.buttons {
-display: flex;
-justify-content: space-between;
-}
-
-.buttons .btn {
-padding: 10px 20px;
-font-size: 1rem;
-border: none;
-border-radius: 5px;
-cursor: pointer;
-}
-
-.buttons .cancel-btn {
-background-color: #ccc;
-color: #000;
-}
-
-.buttons .reset-btn {
-background-color: #f44336; /* Rojo */
-color: #fff;
-padding: 10px 10px 10px 10px;
-}
-
-    .footer {
-        text-align: center;
-        padding: 20px;
-        background-color: #f8f1ea;
-        color: #333;
-        font-size: 14px;
-        width: 100%;
-    }
-
-    .footer a {
-        color: #333;
-        text-decoration: none;
-        margin: 0 10px;
-    }
-
-    .footer-icons img {
-        width: 20px;
-        margin: 0 5px;
-    }
-</style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="logo">
-    <img src="../img/ADO-Autobuses-de-Oriente-Logo-700x394.png" alt="ADO Logo">
-</div>
+  
 
   <!-- Main content -->
   <main class="main-container">
     <div class="form-container">
-        <h2>¿Olvidaste tu contraseña?</h2>
-        <p>Ingresa tu correo electrónico</p>
-        <form id="recuperar-form">
-            <div class="input-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="Ingresa tu correo" required>
-            </div>
-            <div class="buttons">
-                <button type="button" class="btn cancel-btn" onclick="window.location.href='../sesion/login.html'">Cancelar</button>
-                <button type="submit" class="btn reset-btn">Restablecer Contraseña</button>
-            </div>
-        </form>
-        <p id="mensaje"></p>
-        <p id="enlace-cambio"></p>
+      <h2>¿Olvidaste tu contraseña?</h2>
+      <p>Ingresa tu correo electrónico</p>
+      <form action="#" method="POST">
+        <div class="input-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="Ingresa tu correo" required>
+        </div>
+        <div class="buttons">
+          <button type="button" class="btn cancel-btn" href="../sesion/login.html">Cancelar</button>
+          <button type="submit" class="btn reset-btn">Restablecer Contraseña</button>
+        </div>
+      </form>
     </div>
   </main>
 
@@ -151,38 +44,6 @@ padding: 10px 10px 10px 10px;
 <div class="footer">
   
 </div>
-
-
-<script>
-  document.getElementById("recuperar-form").addEventListener("submit", async function(event) {
-      event.preventDefault();
-      const email = document.getElementById("email").value;
-      const enlaceCambio = document.getElementById("enlace-cambio");
-
-      const response = await fetch("http://127.0.0.1:8000/api/solicitarContraseña", {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ email: email })
-      });
-
-      const data = await response.json();
-      const mensaje = document.getElementById("mensaje");
-
-      if (response.ok) {
-          mensaje.innerHTML = "Se ha enviado un código de verificación a tu correo.";
-          mensaje.style.color = "green";
-
-            // Mostrar el enlace de cambio de contraseña
-            enlaceCambio.innerHTML = `<a href="cambiarContra.html">Ir a cambio de contraseña</a>`;
-      } else {
-          mensaje.innerHTML = data.message;
-          mensaje.style.color = "red";
-          enlaceCambio.innerHTML = ""; // Ocultar enlace si hay error
-      }
-  });
-</script>
 
 </body>
 </html>

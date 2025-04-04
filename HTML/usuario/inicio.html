@@ -4,370 +4,182 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página ADO</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #FFF;
-        }
-
-        /* Encabezado */
-        /* Header */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            background-color: #FCF0E3;
-        }
-
-        .header img {
-            max-width: 100px;
-            margin-right: auto;
-            padding: 0px 100px;
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .nav-links a {
-            color: #333;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .nav-links a:hover {
-            text-decoration: underline;
-        }
-
-        /* Dropdown Menu para Boletos */
-        .dropdown {
-            position: relative;
-        }
-
-        .dropbtn {
-            color: #333;
-            font-size: 16px;
-            font-weight: bold;
-            text-decoration: none;
-            cursor: pointer;
-            padding: 10px;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            min-width: 200px;
-            z-index: 1000;
-        }
-
-        .dropdown-content a {
-            display: block;
-            padding: 10px 15px;
-            color: #333;
-            text-decoration: none;
-            font-size: 14px;
-            transition: background-color 0.3s ease;
-        }
-
-        .dropdown-content a:hover {
-            background-color: #f0f0f0;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        /* Botón de cerrar sesión */
-        .logout-button {
-            background-color: #f28b82;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            display: inline-block;
-            cursor: pointer;
-            font-size: 16px;
-            text-align: center;
-        }
-
-        .logout-button:hover {
-            background-color: #e57373;
-        }
-
-        /* Sección de Corridas */
-        h2 {
-            text-align: center;
-            font-size: 1.8em;
-            color: #333;
-            margin: 20px 0;
-        }
-
-        .corrida-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-top: 1px solid #ddd;
-        }
-
-        .corrida-item:first-child {
-            border-top: none;
-        }
-
-        .corrida-item p {
-            margin: 0;
-            color: #666;
-        }
-
-        .promociones {
-            max-width: 600px;
-            margin: 0px auto;
-            position: relative;
-            overflow: hidden;
-            border-radius: 10px;
-        }
-
-        .carousel {
-            display: flex;
-            transition: transform 0.5s ease;
-        }
-
-        .carousel img {
-            width: 100%;
-            border-radius: 10px;
-        }
-
-        /* Botones de navegación */
-        .prev, .next {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            padding: 10px;
-            border-radius: 50%;
-        }
-
-        .prev {
-            left: 10px;
-        }
-
-        .next {
-            right: 10px;
-        }
-
-        /* Sección de Calificación */
-        .calificacion {
-            background-color: #fff;
-            color: #000;
-            text-align: center;
-            padding: 30px 0;
-            margin-top: 20px;
-        }
-
-        .calificacion h2 {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-
-        .estrellas {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .estrellas p {
-            color: #fff;
-            font-size: 14px;
-        }
-
-        /* Footer */
-        .footer {
-            background-color: #f8f1ea;
-            padding: 40px 20px;
-            display: flex;
-            justify-content: space-around;
-            align-items: flex-start;
-            color: #333;
-            font-size: 14px;
-        }
-
-        .footer .logo {
-            text-align: left;
-        }
-
-        .footer .logo img {
-            width: 80px;
-        }
-
-        .footer .copyright {
-            margin-top: 10px;
-        }
-
-        .footer .section {
-            text-align: left;
-        }
-
-        .footer .section h3 {
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .footer .section a {
-            color: #333;
-            text-decoration: none;
-            display: block;
-            margin: 5px 0;
-        }
-
-        .footer .section a:hover {
-            text-decoration: underline;
-        }
-
-        .footer .social-icons {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .footer .social-icons img {
-            width: 20px;
-        }
-
-        .corrida-item.highlight {
-            background-color: #fff;
-            padding: 20px;
-            margin: 10px auto;
-            width: 80%;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-    </style>
+<link rel="stylesheet" href="../estilos.css">
 </head>
 <body>
 
     <div class="header">
         <img src="../img/ADO-Autobuses-de-Oriente-Logo-700x394.png" alt="ADO Logo">
         <div class="nav-links">
-            <a href="../usuario/inicio.html" style="background-color: #f79191;">Inicio</a>
-            <!-- Menú desplegable para Boletos -->
-            <div class="dropdown">
-                <a href="#" class="dropbtn">Boletos</a>
-                <div class="dropdown-content">
-                    <a href="../sesion/compra de boleto.html">Comprar boleto</a>
-                </div>
+          <a href="../usuario/inicio.html">Inicio</a>
+        
+          <!-- Menú desplegable para Boletos -->
+          <div class="dropdown">
+            <a href="#" class="dropbtn">Boletos</a>
+            <div class="dropdown-content">
+              <a href="../sesion/compra de boleto.html">Comprar boleto</a>
+              
             </div>
-            <!-- Enlace simple para Perfil -->
-            <a href="../usuario/corridas.html">Corridas</a>   
-            <a href="../usuario/perfil copy.html">Perfil</a>
-            <a href="../index.html" id="logoutButton" name="logoutButton" class="logout-button">Cerrar Sesión</a>
+          </div>
+        
+          <!-- Enlace simple para Perfil -->
+             <a href="../usuario/corridas.html">Corridas</a>   <a href="../usuario/perfil.html">Perfil -</a>
+        
+        
+          <a href="../index.html" id="logoutButton" name="logoutButton" class="logout-button">Cerrar Sesión</a>
         </div>  
     </div>
-
-    <h2>Corridas por salir</h2>
+    <h2> Corridas por salir </h2>
     <div id="corridas-container"></div>
 
-    <div class="promociones">
-        <h2 align="center">PROMOCIONES</h2>
-        <div class="carousel" id="carousel">
-            <img src="../img/P.png" alt="Promoción 1">
-            <img src="../img/P1.png" alt="Promoción 2">
-        </div>
-        <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
-        <button class="next" onclick="moveSlide(1)">&#10095;</button>
+
+<div class="promociones">
+    <h2 align="center">PROMOCIONES</h2>
+    <div class="carousel" id="carousel">
+   
+        <img src="../img/P.png" alt="Promoción 1">
+        <img src="../img/P1.png" alt="Promoción 2">
+      
     </div>
+    <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
+    <button class="next" onclick="moveSlide(1)">&#10095;</button>
+</div>
 
-    <script>
-        let currentSlide = 0;
+<script>
+    let currentSlide = 0;
 
-        function moveSlide(direction) {
-            const carousel = document.getElementById("carousel");
-            const slides = document.querySelectorAll(".carousel img");
-            const totalSlides = slides.length;
+    function moveSlide(direction) {
+        const carousel = document.getElementById("carousel");
+        const slides = document.querySelectorAll(".carousel img");
+        const totalSlides = slides.length;
 
-            currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
-            carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+        currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+        carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+    const token = localStorage.getItem('token'); // Obtener token desde localStorage
+
+// Función para obtener y renderizar las corridas próximas
+    function getCorridas() {
+    if (!token) {
+        console.error("No hay token disponible, por favor inicia sesión primero.");
+        alert("Por favor, inicia sesión para continuar.");
+        return;
+    }
+
+    console.log("Token:", token);
+
+    const apiUrl = "http://127.0.0.1:8000"; // URL base de la API
+    fetch(apiUrl + "/api/corrida/view", {
+        method: "POST",
+        headers: {
+        "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ token: token }),
+    })
+        .then(response => {
+        if (!response.ok) {
+            throw new Error("Error en la solicitud: " + response.status);
         }
-
-        const token = localStorage.getItem('token'); // Obtener token desde localStorage
-
-        // Función para obtener y renderizar las corridas próximas
-        function getCorridas() {
-            if (!token) {
-                console.error("No hay token disponible, por favor inicia sesión primero.");
-                alert("Por favor, inicia sesión para continuar.");
-                return;
-            }
-
-            console.log("Token:", token);
-
-            const apiUrl = "http://127.0.0.1:8000"; // URL base de la API
-            fetch(apiUrl + "/api/corrida/view", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ token: token }),
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Error en la solicitud: " + response.status);
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.corridas && Array.isArray(data.corridas)) {
-                    console.log("Corridas obtenidas:", data.corridas);
-                    renderCorridas(data.corridas); // Renderizar las corridas
-                } else {
-                    console.error("La respuesta de la API no contiene corridas válidas.");
-                }
-            })
-            .catch(error => {
-                console.error("Error:", error);
-            });
+        return response.json();
+        })
+        .then(data => {
+        if (data.corridas && Array.isArray(data.corridas)) {
+            console.log("Corridas obtenidas:", data.corridas);
+            renderCorridas(data.corridas); // Renderizar las corridas
+        } else {
+            console.error("Error al obtener las corridas:", data.message || "Respuesta inesperada.");
+            alert("No se pudo obtener la información de las corridas.");
         }
+        })
+        .catch(error => {
+        console.error("Error al realizar la solicitud:", error);
+        alert("Ocurrió un error inesperado. Intenta nuevamente más tarde.");
+        });
+    }
 
-        function renderCorridas(corridas) {
-            const container = document.getElementById('corridas-container');
-            const currentTime = new Date().toISOString(); // Obtener el tiempo actual
-
-            container.innerHTML = ''; // Limpiar el contenedor antes de renderizar nuevas corridas
-
-            corridas.forEach(corrida => {
-                const corridaDateTime = new Date(corrida.hora_salida).toISOString(); // Asegúrate de que las horas estén en formato ISO
-                if (corridaDateTime > currentTime) {
-                    const corridaElement = document.createElement('div');
-                    corridaElement.classList.add('corrida-item');
-                    corridaElement.innerHTML = `
-                        <p>Destino: ${corrida.destino}</p>
-                        <p>Salida: ${new Date(corrida.hora_salida).toLocaleString()}</p>
-                        <p>Precio: $${corrida.precio}</p>
-                    `;
-                    container.appendChild(corridaElement);
-                }
-            });
+    // Función para formatear la hora a formato AM/PM
+    function formatHour(hour) {
+    if (hour && hour.includes(":")) {
+        const [hours, minutes] = hour.split(":").map(part => parseInt(part, 10));
+        if (!isNaN(hours) && !isNaN(minutes)) {
+        const period = hours >= 12 ? "PM" : "AM";
+        const adjustedHours = hours % 12 || 12;
+        return `${adjustedHours}:${minutes.toString().padStart(2, "0")} ${period}`;
         }
+    }
+    return hour; // Devuelve el valor original si no cumple el formato esperado
+    }
+    // Configurar actualización automática cada 10 segundos
+    function startAutoUpdate() {
+    getCorridas(); // Render inicial
+    setInterval(getCorridas, 10000); // Actualización cada 10 segundos
+    }
 
-        // Llamada inicial a getCorridas() para obtener las corridas al cargar la página
-        getCorridas();
-    </script>
+    function renderCorridas(corridas) {
+    const corridasContainer = document.getElementById("corridas-container");
+  corridasContainer.innerHTML = ""; // Limpiar contenedor
 
-  <!-- Sección de Calificación -->
+  // Obtener la fecha y hora actual
+    const now = new Date();
+    const today = now.toISOString().split("T")[0];
+    const currentTime = now.toTimeString().split(" ")[0]; // Formato HH:mm:ss
+
+    // Filtrar corridas que coincidan con la fecha y cuya hora de salida sea posterior a la actual
+    const corridasDisponibles = corridas.filter(corrida => 
+        corrida.fecha === today && corrida.hora_salida > currentTime
+    );
+
+    if (corridasDisponibles.length === 0) {
+        corridasContainer.innerHTML = `
+        <div style="text-align: center; padding: 20px; color: #555;">
+            <p>No hay corridas disponibles para el resto del día.</p>
+        </div>
+        `;
+        return;
+    }
+
+    // Ordenar corridas por hora de salida más cercana
+    corridasDisponibles.sort((a, b) => new Date(`1970-01-01T${a.hora_salida}:00`) - new Date(`1970-01-01T${b.hora_salida}:00`));
+
+    // Renderizar corridas
+    corridasDisponibles.forEach((corrida, index) => {
+        const isNext = index === 0; // La primera corrida es la próxima a salir
+        const corridaElement = document.createElement("div");
+        corridaElement.className = `corrida-item ${isNext ? "highlight" : ""}`;
+        corridaElement.style = `
+        background-color: #fff;
+        padding: 20px;
+        margin: 10px auto;
+        width: 80%;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        
+        `;
+        corridaElement.innerHTML = `
+        <div>
+            <p><strong>Origen:</strong> ${corrida.origen}</p>
+            <p><strong>Destino:</strong> ${corrida.destino}</p>
+            <p>${corrida.tipo_corrida === "1" ? "Directa" : "Con Escalas"}</p>
+            <p><strong>Precio:</strong> $${corrida.precio}</p>
+        </div>
+        <p style="font-weight: bold; font-size: 1.2em;">🔺 ${formatHour(corrida.hora_salida)}</p>
+        `;
+        corridasContainer.appendChild(corridaElement);
+    });
+    }
+
+// Llamar a la función para obtener y renderizar las corridas
+getCorridas();
+
+
+
+    // Llamar a la función para obtener y renderizar las corridas
+    getCorridas();
+
+</script>
+
+
+<!-- Sección de Calificación -->
 <div class="calificacion">
     <h2>Calificación Experiencia de Viajes</h2>
     <div class="estrellas">
@@ -423,7 +235,7 @@
   nomodule
   src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
 ></script>
-<script src="../apis/script.js"></script>
+<script src="./js/script.js"></script>
 <script src="../apis/logout.js"></script>
 <script src="../apis/sesion.js"></script>
 </body>

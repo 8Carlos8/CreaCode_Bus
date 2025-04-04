@@ -4,175 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Selecciona tu boleto</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="../estilos.css">
 </head>
-<style>
-    body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #fff;
-}
 
- /* Header */
- .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  background-color: #FCF0E3;
-}
-
-.header img {
-  max-width: 100px;
-  margin-right: auto;
-  padding: 0px 100px;
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.nav-links a {
-  color: #333;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.nav-links a:hover {
-  text-decoration: underline;
-}
-
-/* Dropdown Menu para Boletos */
-.dropdown {
-  position: relative;
-}
-
-.dropbtn {
-  color: #333;
-  font-size: 16px;
-  font-weight: bold;
-  text-decoration: none;
-  cursor: pointer;
-  padding: 10px;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: #ffffff;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  min-width: 200px;
-  z-index: 1000;
-}
-
-.dropdown-content a {
-  display: block;
-  padding: 10px 15px;
-  color: #333;
-  text-decoration: none;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
-}
-
-.dropdown-content a:hover {
-  background-color: #f0f0f0;
-}
-
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
-/* Botón de cerrar sesión */
-.logout-button {
-  background-color: hsl(0, 98%, 50%);
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 5px;
-  text-decoration: none;
-  display: inline-block;
-  cursor: pointer;
-  font-size: 16px;
-  text-align: center;
-}
-
-.logout-button:hover {
-  background-color: hsl(0, 98%, 50%);
-}
-
-
-main {
-  padding: 20px;
-}
-
-h1 {
-  text-align: center;
-}
-
-form {
-  display: grid;
-  gap: 15px;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-input, button {
-  padding: 10px;
-  font-size: 16px;
-}
-
-button.search-button {
-  background-color: #d32f2f;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-.hidden {
-  display: none;
-}
-
-.results {
-  margin-top: 30px;
-}
-
-.card {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 15px;
-  margin: 15px 0;
-}
-
-
-.card h3 {
-  margin: 0 0 10px;
-}
-
-.card button {
-  background-color: #d32f2f;
-  color: white;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-}
-
-</style>
 <body>
     <div class="header">
-        <img src="../img/ADO-Autobuses-de-Oriente-Logo-700x394.png" alt="ADO Logo">
+        <img src="../ADO-Autobuses-de-Oriente-Logo-700x394.png" alt="ADO Logo">
         <div class="nav-links">
           <a href="../usuario/inicio.html">Inicio</a>
       
           <!-- Menú desplegable para Boletos -->
           <div class="dropdown">
-            <a href="#" class="dropbtn" style="background-color: #f79191" ;>Boletos</a>
+            <a href="#" class="dropbtn">Boletos</a>
             <div class="dropdown-content">
                 <a href="../sesion/compra de boleto.html">Comprar boleto</a>
                 <a href="../usuario/cambiar-boleto.html">Cambiar boleto</a>
