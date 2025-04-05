@@ -4,50 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agregar Autobús</title>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../estilos.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
-<body>
-    <header class="header">
-        <img class="header__logo" src="../img/ADO-Autobuses-de-Oriente-Logo-700x394.png" alt="ADO Logo">
-        <nav class="nav">
-            <ul class="nav__list">
-                <li class="nav__item" style="color:red;">
-                    <a class="nav__link" href="index1.html">Inicio</a>
-                </li>
-                <li class="nav__item">
-                    <a class="nav__link" href="../sesion/login.html">Cerrar Sesión</a>
-                </li>
-            </ul>
-        </nav>
-    </header>
-
+  </head>
+  <body>
+    <div class="header">
+        <img src="../img/ADO-Autobuses-de-Oriente-Logo-700x394.png" alt="ADO Logo">
+        <div class="nav-links">
+          <a href="index1.html">Inicio</a>
+          <a href="../index.html" id="logoutButton" name="logoutButton" class="logout-button">Cerrar Sesión</a>
+        </div>  
+    </div>
     <main class="main">
         <section class="form">
             <h2 class="form__title">Agregar Autobús</h2>
             <form class="form__content" id="autobusForm">
                 <div class="form__group">
-                    <label for="id" class="form__label">ID del Autobús:</label>
+                    <label for="id" class="form__label" style="display: flex;  width: 100%;">ID del Autobús:</label>
                     <input type="text" id="id" class="form__input" placeholder="ID del autobús" required />
                 </div>
                 <div class="form__group">
-                    <label for="numero" class="form__label">Número del Autobús:</label>
+                    <label for="numero" class="form__label" style="display: flex;  width: 100%;">Número del Autobús:</label>
                     <input type="text" id="numero" class="form__input" placeholder="Número del autobús" required />
                 </div>
                 <div class="form__group">
-                    <label for="capacidad" class="form__label">Capacidad:</label>
-                    <input type="number" id="capacidad" class="form__input" placeholder="Capacidad del autobús" required />
+                    <label for="capacidad" class="form__label" style="display: flex;  width: 100%;">Capacidad:</label>
+                    <input type="number" id="asientos" class="form__input" placeholder="Número de asientos" style="
+                    -webkit-appearance: none !important;
+                    -moz-appearance: none !important;
+                    appearance: none !important;
+                    padding: 12px 15px !important;
+                    border-radius: 5px !important;
+                    border: 1px solid #ddd !important;
+                    width: 100% !important;
+                    box-sizing: border-box !important;
+                    font-family: Arial, sans-serif !important;
+                    font-size: 16px !important;"required/>
                 </div>
                 <div class="form__group">
-                    <label for="servicios" class="form__label">Servicios:</label>
+                    <label for="servicios" class="form__label" style="display: flex;  width: 100%;">Servicios:</label>
                     <input type="text" id="servicios" class="form__input" placeholder="Servicios del autobús" required />
                 </div>
                 <div class="form__group">
-                    <label for="incidentes" class="form__label">Número de Incidentes:</label>
-                    <input type="number" id="incidentes" class="form__input" placeholder="Número de incidentes" required />
+                    <label for="incidentes" class="form__label" style="display: flex;  width: 100%;">Número de Incidentes:</label>
+                    <input type="number" id="asientos" class="form__input" placeholder="Número de asientos" style="
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            appearance: none !important;
+            padding: 12px 15px !important;
+            border-radius: 5px !important;
+            border: 1px solid #ddd !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+            font-family: Arial, sans-serif !important;
+            font-size: 16px !important;"required/>
                 </div>
                 <div class="form__group">
-                    <label for="estado" class="form__label">Estado:</label>
+                    <label for="estado" class="form__label" style="display: flex;  width: 100%;">Estado:</label>
                     <select id="estado" class="form__select" required>
                         <option value="activo">Activo</option>
                         <option value="inactivo">Inactivo</option>

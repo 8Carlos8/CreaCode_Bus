@@ -4,67 +4,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agregar Corrida</title>
-    <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="../estilos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <header class="header">
-        <img class="header__logo" src="../img/ADO-Autobuses-de-Oriente-Logo-700x394.png" alt="ADO Logo">
-        <nav class="nav">
-            <ul class="nav__list">
-                <li class="nav__item">
-                    <a class="nav__link" style="background-color: #f79191 ; " href="corridas.html">Ver Corridas</a>
-                </li>
-                <li class="nav__item">
-                    <a class="nav__link" href="../sesion/login.html">Cerrar Sesión</a>
-                </li>
-            </ul>
-        </nav>
-    </header>
-
+  <div class="header">
+      <img src="../img/ADO-Autobuses-de-Oriente-Logo-700x394.png" alt="ADO Logo">
+      <div class="nav-links">
+        <a href="index1.html">Inicio</a>
+        <a href="../index.html" id="logoutButton" name="logoutButton" class="logout-button">Cerrar Sesión</a>
+      </div>  
+  </div>
     <main class="main">
         <section class="form">
             <h2 class="form__title">Agregar Corrida</h2>
             <form class="form__content" id="corridaForm">
                 <div class="form__group">
-                    <label for="autobus" class="form__label">
-                        <i class="fas fa-bus"></i> Autobús:
+                    <label for="autobus"  class="form__label" style="display: flex; width: 100%;">
+                        <i class="fas fa-bus"></i>
+                        <pre> </pre>
+                        <span>Autobús:</span>
                     </label>
                     <input type="text" id="autobus" class="form__input" placeholder="Número de autobús" required />
                 </div>
                 <div class="form__group">
-                    <label for="origen" class="form__label">
-                        <i class="fas fa-map-marker-alt"></i> Origen:
+                    <label for="origen" class="form__label" style="display: flex; width: 100%;">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <pre> </pre>
+                        <span>Origen:</span>
+                        
                     </label>
                     <input type="text" id="origen" class="form__input" placeholder="Ciudad de origen" required />
                 </div>
                 <div class="form__group">
-                    <label for="destino" class="form__label">
-                        <i class="fas fa-flag-checkered"></i> Destino:
+                    <label for="destino" class="form__label" style="display: flex;  width: 100%;">
+                        <i class="fas fa-flag-checkered"></i>
+                        <pre> </pre>
+                        <span>Destino:</span>
+                        
                     </label>
                     <input type="text" id="destino" class="form__input" placeholder="Ciudad de destino" required />
                 </div>
                 <div class="form__group">
-                    <label for="fecha" class="form__label">
-                        <i class="fas fa-calendar-alt"></i> Fecha:
+                    <label for="fecha" class="form__label" style="display: flex;  width: 100%;">
+                        <i class="fas fa-calendar-alt"></i>
+                        <pre> </pre>
+                        <span>Fecha:</span>
                     </label>
-                    <input type="date" id="fecha" class="form__input" required />
+                    <input type="date" id="fecha" class="form__input" 
+                    style="
+                      -webkit-appearance: none !important;
+                      -moz-appearance: none !important;
+                      appearance: none !important;
+                      padding: 12px 15px !important;
+                      border-radius: 5px !important;
+                      border: 1px solid #ddd !important;
+                      width: 100% !important;
+                      box-sizing: border-box !important;
+                      font-family: Arial, sans-serif !important;
+                      font-size: 16px !important;
+                    " required />
                 </div>
                 <div class="form__group">
-                    <label for="horaSalida" class="form__label">
-                        <i class="fas fa-clock"></i> Hora de salida:
+                    <label for="horaSalida" class="form__label" style="display: flex;  width: 100%;">
+                        <i class="fas fa-clock"></i>
+                        <pre> </pre>
+                        <span>Hora de salida:</span>
                     </label>
-                    <input type="time" id="horaSalida" class="form__input" required />
+                    <input type="time" id="horaSalida" class="form__input" 
+                    style="
+                      -webkit-appearance: none !important;
+                      -moz-appearance: none !important;
+                      appearance: none !important;
+                      padding: 12px 15px !important;
+                      border-radius: 5px !important;
+                      border: 1px solid #ddd !important;
+                      width: 100% !important;
+                      box-sizing: border-box !important;
+                      font-family: Arial, sans-serif !important;
+                      font-size: 16px !important;
+                    " required />
+                    
                 </div>
                 <div class="form__group">
-                    <label for="horaLlegada" class="form__label">
-                        <i class="fas fa-clock"></i> Hora estimada de llegada:
+                    <label for="horaLlegada" class="form__label" style="display: flex;  width: 100%;">
+                        <i class="fas fa-clock"></i>
+                        <pre> </pre>
+                        <span>Hora estimada de llegada:</span>
                     </label>
-                    <input type="time" id="horaLlegada" class="form__input" required />
+                    
                 </div>
                 <div class="form__group">
-                    <label for="tipoCorrida" class="form__label">
-                        <i class="fas fa-route"></i> Tipo de corrida:
+                    <label for="tipoCorrida" class="form__label" style="display: flex; width: 100%;">
+                        <i class="fas fa-route"></i>
+                        <pre> </pre>
+                        <span>Tipo de corrida:</span>
                     </label>
                     <select id="tipoCorrida" class="form__select" required>
                         <option value="" disabled selected>Seleccione el tipo</option>
@@ -73,16 +107,44 @@
                     </select>
                 </div>
                 <div class="form__group">
-                    <label for="asientos" class="form__label">
-                        <i class="fas fa-chair"></i> Asientos disponibles:
+                    <label for="asientos" class="form__label" style="display: flex;  width: 100%;">
+                        <i class="fas fa-chair"></i>
+                        <pre> </pre>
+                        <span>Asientos disponibles:</span>
                     </label>
-                    <input type="number" id="asientos" class="form__input" placeholder="Número de asientos" required />
+                    <input type="number" id="asientos" class="form__input" placeholder="Número de asientos" style="
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            appearance: none !important;
+            padding: 12px 15px !important;
+            border-radius: 5px !important;
+            border: 1px solid #ddd !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+            font-family: Arial, sans-serif !important;
+            font-size: 16px !important;"required/>
                 </div>
                 <div class="form__group">
-                    <label for="precio" class="form__label">
-                        <i class="fas fa-dollar-sign"></i> Precio:
-                    </label>
-                    <input type="number" id="precio" class="form__input" placeholder="Precio del boleto" required />
+                    <label for="precio" class="form__label" style="display: flex;  width: 100%;">
+                        <i class="fas fa-dollar-sign"></i>
+                        <pre> </pre>
+                        <span>Precio:</span>
+                        <input 
+                        type="number" 
+                        id="precio" 
+                        class="form__input" 
+                        placeholder="Precio del boleto" 
+                        style="
+                            -webkit-appearance: none !important;
+                            -moz-appearance: none !important;
+                            appearance: none !important;
+                            padding: 12px 15px !important;
+                            border-radius: 5px !important;
+                            border: 1px solid #ddd !important;
+                            width: 100% !important;
+                            box-sizing: border-box !important;
+                            font-family: Arial, sans-serif !important;
+                            font-size: 16px !important;"required/>
                 </div>
                 <button type="submit" class="form__button">Guardar Corrida</button>
             </form>
