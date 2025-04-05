@@ -79,5 +79,29 @@
       </nav>
     </section>
   </main>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const userRole = document.getElementById("userRole").value; // Obtener el rol
+      
+      if (userRole === "operador") {
+        // Ocultar elementos no permitidos
+        const restrictedLinks = [
+          "listaDeUsuarios.html",
+          "Boletaje.html",
+          "Reportes.html"
+        ];
+        
+        // Recorrer todos los enlaces del menú
+        document.querySelectorAll(".admin-menu__link").forEach(link => {
+          const href = link.getAttribute("href");
+          if (restrictedLinks.includes(href)) {
+            link.parentElement.style.display = "none"; // Oculta el <li> completo
+          }
+        });
+      }
+    });
+  </script>
+  
 </body>
 </html>
+
