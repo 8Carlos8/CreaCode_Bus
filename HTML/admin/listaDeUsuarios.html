@@ -20,53 +20,69 @@
         <section class="user-table">
             <h2 class="user-table__title">Lista de Usuarios</h2>
             <table class="user-table__data">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Apellido Paterno</th>
-                        <th>Apellido Materno</th>
-                        <th>Correo Electrónico</th>
-                        <th>Número Telefónico</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Usuario #1</td>
-                        <td>Apellido1</td>
-                        <td>Apellido2</td>
-                        <td>usuario1@example.com</td>
-                        <td>1234567890</td>
-                        <td class="user-table__actions">
-                            <button class="user-table__button user-table__button--edit">Editar</button>
-                            <button class="user-table__button user-table__button--delete">Eliminar</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Usuario #2</td>
-                        <td>Apellido3</td>
-                        <td>Apellido4</td>
-                        <td>usuario2@example.com</td>
-                        <td>9876543210</td>
-                        <td class="user-table__actions">
-                            <button class="user-table__button user-table__button--edit">Editar</button>
-                            <button class="user-table__button user-table__button--delete">Eliminar</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Usuario #3</td>
-                        <td>Apellido5</td>
-                        <td>Apellido6</td>
-                        <td>usuario3@example.com</td>
-                        <td>1122334455</td>
-                        <td class="user-table__actions">
-                            <button class="user-table__button user-table__button--edit">Editar</button>
-                            <button class="user-table__button user-table__button--delete">Eliminar</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Apellido Paterno</th>
+                            <th>Apellido Materno</th>
+                            <th>Correo Electrónico</th>
+                            <th>Número Telefónico</th>
+                            <th>Correo Verificado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Aquí se llenarán los datos de los usuarios -->
+                    </tbody>
+                </table>
+                <script>       
+                    const token = localStorage.getItem('token');         
+                    function fetchListaUsu() {
+                        fetch("http://127.0.0.1:8000/api/listaUsuarios", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({ token: token }),
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            const tableBody = document.querySelector('.user-table__data tbody');
+                            tableBody.innerHTML = ''; // Limpiar el contenido previo
+                
+                            if (data.usuarios && data.usuarios.length > 0) {
+                                data.usuarios.forEach(usuario => {
+                                    const row = `
+                                        <tr>
+                                            <td>${usuario.name}</td>
+                                            <td>${usuario.apellido_p}</td>
+                                            <td>${usuario.apellido_m}</td>
+                                            <td>${usuario.email}</td>
+                                            <td>${usuario.telefono}</td>
+                                            <td>${usuario.email_verified_at}</td>
+                                            <td class="user-table__actions">
+                                                <button class="user-table__button user-table__button--edit">Editar</button>
+                                                <button class="user-table__button user-table__button--delete">Eliminar</button>
+                                            </td>
+                                        </tr>
+                                    `;
+                                    tableBody.innerHTML += row;
+                                });
+                            } else {
+                                tableBody.innerHTML = '<tr><td colspan="6">No hay usuarios disponibles.</td></tr>';
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error al obtener la lista de usuarios:", error);
+                        });
+                    }
+                
+                    // Llamar la función al cargar la página
+                    window.addEventListener('DOMContentLoaded', fetchListaUsu);
+                  </script>
         </section>
     </main>
 </body>
 </html>
+    
+

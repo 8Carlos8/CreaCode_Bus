@@ -26,7 +26,7 @@
   </main>
 
   <script>
-    const token = "1|2LkTFu9P2U7VazXJ3YEKXYX7OxnZeIhHK7lFhhBB7a7e4f00"; // Token fijo de ejemplo
+    const token = localStorage.getItem('token');
     const container = document.getElementById("corridasContainer");
 
     function fetchCorridas() {
@@ -41,37 +41,66 @@
       .then(data => {
         if (data.corridas && data.corridas.length > 0) {
           data.corridas.forEach((corrida, index) => {
-            // Resumen de los asientos
             const totalAsientos = corrida.asientos.length;
             const disponibles = corrida.asientos.filter(asiento => asiento.estado === "disponible").length;
             const ocupados = totalAsientos - disponibles;
-
-            // Mostrar corrida con resumen de asientos
+            function formatHour(hour) {
+              // Verifica que la hora esté en un formato válido
+              if (hour && hour.includes(":")) {
+                // Divide la hora en sus componentes
+                const [hours, minutes] = hour.split(":").map(part => parseInt(part, 10));
+                if (!isNaN(hours) && !isNaN(minutes)) {
+                  // Determina si es AM o PM
+                  const period = hours >= 12 ? "PM" : "AM";
+                  // Convierte las horas al formato de 12 horas
+                  const adjustedHours = hours % 12 || 12; // Convierte "0" o "12" a "12" en formato 12 horas
+                  return `${adjustedHours}:${minutes.toString().padStart(2, "0")} ${period}`;
+                }
+              }
+              return hour; // Devuelve el valor original si no cumple el formato esperado
+            }
             container.innerHTML += `
-              <div class="corridas__card">
-                <h3 class="corridas__card-title">Corrida ${index + 1}</h3>
-                <p class="corridas__card-text"><strong>Autobús:</strong> ${corrida.id_autobus}</p>
-                <p class="corridas__card-text"><strong>Origen:</strong> ${corrida.origen}</p>
-                <p class="corridas__card-text"><strong>Destino:</strong> ${corrida.destino}</p>
-                <p class="corridas__card-text"><strong>Fecha:</strong> ${corrida.fecha}</p>
-                <p class="corridas__card-text"><strong>Hora de salida:</strong> ${corrida.hora_salida}</p>
-                <p class="corridas__card-text"><strong>Hora estimada de llegada:</strong> ${corrida.hora_estima_llegada}</p>
-                <p class="corridas__card-text"><strong>Tipo de Corrida:</strong> ${corrida.tipo_corrida}</p>
-                <p class="corridas__card-text"><strong>Total Asientos:</strong> ${totalAsientos}</p>
-                <p class="corridas__card-text"><strong>Asientos Disponibles:</strong> ${disponibles}</p>
-                <p class="corridas__card-text"><strong>Asientos Ocupados:</strong> ${ocupados}</p>
-                <p class="corridas__card-text"><strong>Precio:</strong> $${corrida.precio}</p>
+              <div class="corrida">
+                <h2>Detalles de la Corrida</h2>
+                <div class="container">
+                  <div class="card">
+                    <h3>Corrida ${index + 1}</h3>
+                    <p><strong>Autobús:</strong> ${corrida.id}</p>
+                    <p><strong>Autobús:</strong> ${corrida.id_autobus}</p>
+                    <p><strong>Origen:</strong> ${corrida.origen}</p>
+                    <p><strong>Destino:</strong> ${corrida.destino}</p>
+                    <p><strong>Fecha:</strong> ${corrida.fecha}</p>
+                    <p><strong>Hora de salida:</strong>  ${formatHour(corrida.hora_salida)}</p>
+                    <p><strong>Hora estimada de llegada:</strong> ${formatHour( corrida.hora_estima_llegada)}</p>
+                    <p><strong>Tipo de Corrida:</strong> ${corrida.tipo_corrida}</p>
+                    <p><strong>Total Asientos:</strong> ${totalAsientos}</p>
+                    <p><strong>Asientos Disponibles:</strong> ${disponibles}</p>
+                    <p><strong>Asientos Ocupados:</strong> ${ocupados}</p>
+                    <p><strong>Precio:</strong> $${corrida.precio}</p>
+                    <button class="btn" onclick="idCorri(${corrida.id})">
+                      Comprar boleto
+                    </button>
+                  </div>
+                </div>
               </div>
             `;
           });
         } else {
-          container.innerHTML += "<p class='corridas__no-data'>No hay corridas disponibles.</p>";
+          container.innerHTML += "<p>No hay corridas disponibles.</p>";
         }
       })
       .catch(error => {
         console.error("Error al obtener las corridas:", error);
-        container.innerHTML += "<p class='corridas__error'>Ocurrió un error al cargar las corridas. Intenta nuevamente más tarde.</p>";
+        container.innerHTML += "<p>Ocurrió un error al cargar las corridas. Intenta nuevamente más tarde.</p>";
       });
+    }
+
+    function idCorri(id) {
+      // Guardar los datos de la corrida en localStorage
+      localStorage.setItem('idCorrida', id);
+
+      // Redirigir al formulario de compra con los datos
+      window.location.href = "../sesion/compra de boleto.html"; 
     }
 
     // Llamar a la función al cargar la página

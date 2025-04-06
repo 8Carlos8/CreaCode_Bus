@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <script src="../apis/registro.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro ADO</title>
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Registro ADO</title>
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <link rel="stylesheet" href="../estilos.css">
 </head>
 <body1>
@@ -33,6 +32,7 @@
         
         <label for="password">Password</label>
         <input type="password" id="password" placeholder="Password" required>
+        <ul id="password-error-list" style="color: red; font-size: 12px; list-style-type: disc; padding-left: 20px;"></ul>
         
         <!-- CAPTCHA de Google -->
         <div class="g-recaptcha" data-sitekey="6LfFXM8qAAAAAAicnAmq9BR4w5Zu8veScPvW_IMi"></div>
@@ -56,6 +56,7 @@
         return true; // Si el CAPTCHA es validado, el formulario se envía
     }
 </script>
+<script src="../apis/registro.js"></script>
 
 </body>
 </html>
