@@ -132,7 +132,65 @@ class BoletoController extends Controller
 
         return response()->json(['message' => 'Boletos obtenidos con éxito', 'boletos' => $boletos]);
     }
+    public function reporteBoletosVendidos(Request $request)
+    {
+        // --- Autenticación y Autorización ---
+        $token = $request->input('token');
+        $user = $this->getUserByToken($token);
 
+        // Verifica si el usuario existe y tiene el rol adecuado (ej. 'admin')
+        // Ajusta 'admin' al valor real que uses para identificar administradores en tu campo 'rol'
+        if (!$user || $user->rol !== '1') {
+            return response()->json(['message' => 'No autorizado para generar este reporte'], 403);
+        }
+        // Alternativamente, si usas autenticación web/session, podrías usar:
+        // if (!auth()->check() || auth()->user()->rol !== 'admin') {
+        //     return response()->json(['message' => 'No autorizado'], 403);
+        // }
+
+        // --- Lógica del Reporte ---
+        $query = Boleto::query()
+            ->with([
+                'user:id,name,apellido_p,email', // Carga usuario relacionado (selecciona columnas específicas)
+                'corrida:id,origen,destino,fecha,hora_salida' // Carga corrida relacionada
+            ]);
+
+        // --- Filtrado (Ejemplos) ---
+
+        // 1. Filtrar por Rango de Fechas de Compra
+        if ($request->has('fecha_inicio') && $request->has('fecha_fin')) {
+            $request->validate([
+                'fecha_inicio' => 'required|date_format:Y-m-d',
+                'fecha_fin' => 'required|date_format:Y-m-d|after_or_equal:fecha_inicio',
+            ]);
+            // Asegúrate que la comparación incluya todo el día final
+            $query->whereBetween('fecha_compra', [$request->fecha_inicio . ' 00:00:00', $request->fecha_fin . ' 23:59:59']);
+        }
+
+        // 2. Filtrar por Estado del Boleto (1: Activo, 0: Cancelado)
+        if ($request->filled('estado')) {
+            $request->validate(['estado' => 'integer|in:0,1']);
+            $query->where('estado', $request->estado);
+        } else {
+            // Por defecto, podrías mostrar solo los activos si no se especifica estado
+             $query->where('estado', 1);
+        }
+
+        // 3. Filtrar por ID de Corrida específica
+        if ($request->filled('id_corrida')) {
+            $request->validate(['id_corrida' => 'integer|exists:corrida,id']);
+            $query->where('id_corrida', $request->id_corrida);
+        }
+
+        // --- Obtener y Devolver Resultados ---
+        // Ordenar y paginar para manejar grandes cantidades de datos
+        $boletosReporte = $query->orderBy('fecha_compra', 'desc')->paginate(50); // Muestra 50 por página
+
+        return response()->json([
+            'message' => 'Reporte de boletos vendidos generado con éxito',
+            'reporte' => $boletosReporte // Contiene los datos paginados
+        ]);
+    }
     // Helper para obtener usuario por token
     private function getUserByToken($token)
     {

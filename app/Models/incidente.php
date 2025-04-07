@@ -19,11 +19,11 @@ class incidente extends Model
         'fecha',
     ];
 
-    protected function autobus(){
+    public function autobus(){
         return $this->belongsTo(autobus::class, 'id_autobus');
     }
 
-    protected function corrida(){
+    public function corrida(){
         return $this->belongsTo(corrida::class, 'id_corrida');
     }
 }

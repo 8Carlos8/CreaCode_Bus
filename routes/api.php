@@ -9,6 +9,7 @@ use App\Http\Controllers\AutobusController;
 use App\Http\Controllers\CorridaController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\VerificationController;
+use App\Http\Controllers\ReporteController;
 //use App\Http\Controllers\VerificationController;
 
 // Autobuses
@@ -28,6 +29,10 @@ Route::post('/corrida/search', [CorridaController::class, 'search']);
 Route::post('/comprar-boleto', [BoletoController::class, 'comprarBoleto']);
 Route::post('/cancelar-boleto', [BoletoController::class, 'cancelarBoleto']);
 Route::post('/visualizar-boletos', [BoletoController::class, 'visualizarBoletos']);
+    // Puedes aplicar aquí middleware adicional para roles si lo deseas
+    Route::get('/reportes/boletos', [ReporteController::class, 'reporteBoletosVendidos']); // <-- Cambiado
+    Route::get('/reportes/incidentes', [ReporteController::class, 'reporteIncidentes']); // <-- Cambiado
+
 
 Route::post('/registrar-incidente', [IncidenteController::class, 'registrarIncidente']);
 // Asegúrate de que no esté dentro de un grupo con autenticación
