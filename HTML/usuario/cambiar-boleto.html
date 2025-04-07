@@ -1,41 +1,48 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Formulario de Compra</title>
-  <link rel="stylesheet" href="../estilos.css">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cambiar Boleto</title>
+  <link rel="stylesheet" href="../estilos.css" />
 </head>
 <body>
-    <div class="header">
-        <img src="../img/ADO-Autobuses-de-Oriente-Logo-700x394.png" alt="ADO Logo">
-        <div class="nav-links">
-          <a href="../usuario/inicio.html">Inicio</a>
-      
-          <!-- Menú desplegable para Boletos -->
-          <div class="dropdown">
-            <a href="#" class="dropbtn">Boletos</a>
-            <div class="dropdown-content">
-                <a href="../sesion/compra de boleto.html">Comprar boleto</a>
-                <a href="../usuario/cambiar-boleto.html">Cambiar boleto</a>
-                <a href="../usuario/cancelar-boleto.html">Cancelar boleto</a>
-                <a href="../usuario/ver-boleto.html">Ver boleto</a>
-            </div>
-          </div>
-      
-          <!-- Enlace simple para Perfil -->
-        
-          <a href="../usuario/corridas.html">Corridas</a>  <a href="../usuario/perfil.html">Perfil</a>
-      
-          <a href="../index.html" class="logout-button">Cerrar Sesión</a>
-      </div>  </div>
-      
-  
-  <!-- Formulario de Compra -->
-  <form id="ticketForm">
+  <!-- Encabezado con navegación -->
+  <div class="header">
+    <img src="../img/ADO-Autobuses-de-Oriente-Logo-700x394.png" alt="ADO Logo">
+    <div class="nav-links">
+      <a href="../usuario/inicio.html">Inicio</a>
+      <div class="dropdown">
+        <a href="#" class="dropbtn">Boletos</a>
+        <div class="dropdown-content">
+          <a href="../sesion/compra de boleto.html">Comprar boleto</a>
+          <a href="../usuario/cambiar-boleto.html">Cambiar boleto</a>
+          <a href="../usuario/cancelar-boleto.html">Cancelar boleto</a>
+          <a href="../usuario/ver-boleto.html">Ver boleto</a>
+        </div>
+      </div>
+      <a href="../usuario/corridas.html">Corridas</a>
+      <a href="../usuario/perfil.html">Perfil</a>
+      <a href="../index.html" class="logout-button">Cerrar Sesión</a>
+    </div>
+  </div>
 
-    <h2>Cambiar boleto</h2>
+  <!-- Selección de boleto -->
+  <div class="container">
+    <h2>Selecciona un boleto para cambiar</h2>
+    <ul id="lista-boletos">
+      <li onclick="mostrarFormulario({nombre: 'Carlos', apellidos: 'Pérez Soto', tipo_boleto: 'directo'})">
+        Boleto #1 - Carlos - Directo
+      </li>
+      <li onclick="mostrarFormulario({nombre: 'Ana', apellidos: 'López Ruiz', tipo_boleto: 'intermedio'})">
+        Boleto #2 - Ana - Intermedio
+      </li>
+    </ul>
+  </div>
+
+  <!-- Formulario de cambio -->
+  <form id="ticketForm" style="display: none;">
+    <h2>Cambiar Boleto</h2>
     <label for="nombre">Nombre:</label>
     <input type="text" id="nombre" name="nombre">
 
@@ -48,121 +55,124 @@
       <option value="intermedio">Intermedio</option>
     </select>
 
-    <!-- Mapa de Asientos -->
-                <div class="bus">
-                <h2>Selecciona tu asiento</h2>
-                <table>
-                    <tr>
-                      <th></th>
-                      <th></th>
-                      <th>ㅤ</th>
-                      
-                      <th> </th>
-                      <th> </th>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="seat" data-seat="A20"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A19"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A18"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A17"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A16"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A15"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A14"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A13"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A12"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A11"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                    <td> 
-                        <div class="seat" data-seat="A10"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A9"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A8"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A7"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A6"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A5"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A4"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A3"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A2"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A1"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                    </td>
-                    <td> 
-                    </td>
-                    <td> 
-                        <div class="seat" data-seat="A40"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A39"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A38"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A37"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A36"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A35"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A34"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A33"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A32"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A31"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                    </td>
-                    <td> 
-                        <div class="seat" data-seat="A30"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A29"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A28"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A27"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A26"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A25"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A24"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A23"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A22"><img src="../sesion/imgs/asientp" width="20px"  text-align="center"></div>
-                        <div class="seat" data-seat="A21"><img src="imgs/asientp" width="20px"  text-align="center"></div>
-                    </td>
-                           
-                <div class="seat-map">
-                    <div class="row">
-                        <div class="seat-map">
-                    <div class="row">
-                        <button type="button" id="seleccionar">Seleccionar Asiento</button>         
-                       
-                    
-                  </table>
-                  
+    <!-- Fragmento insertado dentro del <form id="ticketForm"> -->
 
-    <!-- Extras -->
-    <div class="extras">
-      <h3>Extras</h3>
-      <ul>
-        <li>
-          <label><input type="checkbox"> WiFi</label>
-          <p>Disfruta de conexión WiFi durante tu viaje.</p>
-        </li>
-        <li>
-          <label><input type="checkbox"> Seguro</label>
-          <p>Adquiere un seguro de viaje.</p>
-        </li>
-      </ul>
-    </div>
+<!-- Mapa de Asientos -->
+<h3>Selecciona tu asiento</h3>
+<div class="bus">
+  <table>
+    <tr>
+      <td>
+        <!-- Columna 1 -->
+        <div class="seat" data-seat="A20"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A19"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A18"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A17"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A16"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A15"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A14"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A13"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A12"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A11"><img src="../sesion/imgs/asientp" width="20px"></div>
+      </td>
+      <td>
+        <!-- Columna 2 -->
+        <div class="seat" data-seat="A10"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A9"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A8"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A7"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A6"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A5"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A4"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A3"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A2"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A1"><img src="../sesion/imgs/asientp" width="20px"></div>
+      </td>
+      <td style="width: 20px;"></td> <!-- Pasillo -->
+      <td>
+        <!-- Columna 3 -->
+        <div class="seat" data-seat="A40"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A39"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A38"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A37"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A36"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A35"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A34"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A33"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A32"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A31"><img src="../sesion/imgs/asientp" width="20px"></div>
+      </td>
+      <td>
+        <!-- Columna 4 -->
+        <div class="seat" data-seat="A30"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A29"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A28"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A27"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A26"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A25"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A24"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A23"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A22"><img src="../sesion/imgs/asientp" width="20px"></div>
+        <div class="seat" data-seat="A21"><img src="../sesion/imgs/asientp" width="20px"></div>
+      </td>
+    </tr>
+  </table>
+</div>
 
-    <!-- Pago -->
-    <h3>Detalles de pago</h3>
-    <p>Total: <span id="total">$0.00</span></p>
-    <label>
-      <input type="checkbox" id="terminos"> Acepto los términos y condiciones
-    </label>
+<button type="button" id="seleccionar">Seleccionar Asiento</button>
 
-    <button type="submit">Cambiar Boleto</button>
+<!-- Extras -->
+<div class="extras">
+  <h3>Extras</h3>
+  <ul>
+    <li>
+      <label><input type="checkbox" name="wifi"> WiFi</label>
+      <p>Disfruta de conexión WiFi durante tu viaje.</p>
+    </li>
+    <li>
+      <label><input type="checkbox" name="seguro"> Seguro</label>
+      <p>Adquiere un seguro de viaje.</p>
+    </li>
+  </ul>
+</div>
+
+<!-- Pago -->
+<h3>Detalles de pago</h3>
+<p>Total: <span id="total">$0.00</span></p>
+<label>
+  <input type="checkbox" id="terminos"> Acepto los términos y condiciones
+</label>
+
+<button type="submit">Cambiar Boleto</button>
+
+    <button type="submit">Guardar Cambios</button>
   </form>
 
+  <!-- Modal -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <p>Boleto cambiado</p>
+      <button id="closeModal">Cerrar</button>
+    </div>
+  </div>
 
-  <!-- Footer -->
-  <footer>
-    © 2024 ADO - Todos los derechos reservados.
-  </footer>
-
-  <!-- Script para Selección de Asientos -->
+  <!-- Scripts -->
   <script>
+    function mostrarFormulario(boleto) {
+      document.getElementById('nombre').value = boleto.nombre;
+      document.getElementById('apellidos').value = boleto.apellidos;
+      document.getElementById('tipo_boleto').value = boleto.tipo_boleto;
+      document.getElementById('ticketForm').style.display = 'block';
+      window.scrollTo(0, document.body.scrollHeight);
+    }
+
     const seats = document.querySelectorAll('.seat');
     const seleccionarBtn = document.getElementById('seleccionar');
     let selectedSeat = null;
 
     seats.forEach(seat => {
       seat.addEventListener('click', () => {
-        if (selectedSeat) {
-          selectedSeat.classList.remove('selected');
-        }
+        if (selectedSeat) selectedSeat.classList.remove('selected');
         seat.classList.add('selected');
         selectedSeat = seat;
       });
@@ -175,32 +185,23 @@
         alert('Por favor, selecciona un asiento.');
       }
     });
-  </script> 
-   <div id="modal" class="modal hidden">
-    <div class="modal-content">
-      <p>Boleto cambiado</p>
-      <button id="closeModal">Cerrar</button>
-    </div>
-  </div>
-  
-  <script>
+
     document.getElementById("ticketForm").addEventListener("submit", function(event) {
       event.preventDefault();
-  
-      // Mostrar el modal
       const modal = document.getElementById("modal");
       modal.classList.remove("hidden");
     });
-  
+
     document.getElementById("closeModal").addEventListener("click", function() {
-      // Ocultar el modal
       const modal = document.getElementById("modal");
       modal.classList.add("hidden");
-  
-      // Redirigir a otra pantalla
-      window.location.href = "../usuario/inicio.html"; // Cambia la ruta a la página deseada
+      window.location.href = "../usuario/inicio.html";
     });
   </script>
-  
+
+  <!-- Footer -->
+  <footer>
+    © 2024 ADO - Todos los derechos reservados.
+  </footer>
 </body>
 </html>
