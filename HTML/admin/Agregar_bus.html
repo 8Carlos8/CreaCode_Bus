@@ -71,4 +71,63 @@
         </section>
     </main>
 </body>
+<script>
+    document.getElementById('autobusForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const token = localStorage.getItem('token');
+    const formData = {
+        id: document.getElementById('id').value,
+        numero: document.getElementById('numero').value,
+        capacidad: parseInt(document.getElementById('asientos').value),
+        servicios: document.getElementById('servicios').value,
+        numeroIncidentes: parseInt(document.getElementById('incidentes').value),
+        estado: document.getElementById('estado').value
+    };
+
+    try {
+        const response = await fetch("http://127.0.0.1:8000/api/autobuses", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formData)
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Error al registrar autobús');
+        }
+        
+        const data = await response.json();
+        alert('Autobús registrado exitosamente!');
+        window.location.href = 'lista_autobuses.html';
+    } catch (error) {
+        console.error("Error:", error);
+        alert('Error al registrar autobús: ' + error.message);
+    }
+});
+
+// Validar disponibilidad de ID en tiempo real
+document.getElementById('id').addEventListener('blur', async function() {
+    const id = this.value;
+    if (id.length >= 3) {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/autobuses/validar-id/${id}`);
+            if (!response.ok) throw new Error('Error al validar ID');
+            
+            const disponible = await response.json();
+            if (!disponible) {
+                this.setCustomValidity('Este ID ya está registrado');
+                alert('Este ID de autobús ya está en uso');
+            } else {
+                this.setCustomValidity('');
+            }
+        } catch (error) {
+            console.error("Error al validar ID:", error);
+        }
+    }
+});
+</script>
 </html>

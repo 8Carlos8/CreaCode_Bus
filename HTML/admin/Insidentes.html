@@ -40,18 +40,52 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-              
+        
                 </tbody>
             </table>
         </section>
     </main>
 </body>
+
+<script>
+    const token = localStorage.getItem('token');
+    const tbody = document.querySelector("tbody");
+
+    function loadIncidentes() {
+        fetch("http://127.0.0.1:8000/api/incidentes", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Error al cargar incidentes');
+            return response.json();
+        })
+        .then(data => {
+            tbody.innerHTML = data.map(incidente => `
+                <tr>
+                    <td>${incidente.id}</td>
+                    <td>${incidente.tipoIncidente}</td>
+                    <td>${incidente.descripcion}</td>
+                    <td>
+                        ${incidente.evidencia ? 
+                            `<img src="${incidente.evidencia}" width="100">` : 
+                            'Sin evidencia'}
+                    </td>
+                    <td>${incidente.tiempoRetrasoMinutos} min</td>
+                    <td>${incidente.autobusMatricula}</td>
+                    <td>${incidente.corridaNumero}</td>
+                </tr>
+            `).join('');
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            tbody.innerHTML = `<tr><td colspan="7">Error al cargar los incidentes</td></tr>`;
+        });
+    }
+    document.addEventListener('DOMContentLoaded', loadIncidentes);
+</script>
+
 </html>
