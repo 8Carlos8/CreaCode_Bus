@@ -6,6 +6,7 @@
     <title>Lista de Usuarios</title>
     <link rel="stylesheet" href="../estilos.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 </head>
 <body>
    <div class="header">
@@ -17,7 +18,7 @@
   </div>
 
     <main class="main">
-        <section class="user-table">
+        <section class="user-table-container">
             <h2 class="user-table__title">Lista de Usuarios</h2>
             <table class="user-table__data">
                     <thead>
@@ -53,28 +54,55 @@
                             if (data.usuarios && data.usuarios.length > 0) {
                                 data.usuarios.forEach(usuario => {
                                     const row = `
-                                        <tr>
+                                        <tr data-id="${usuario.id}">
                                             <td>${usuario.name}</td>
                                             <td>${usuario.apellido_p}</td>
                                             <td>${usuario.apellido_m}</td>
                                             <td>${usuario.email}</td>
                                             <td>${usuario.telefono}</td>
-                                            <td>${usuario.email_verified_at}</td>
+                                            <td>${usuario.email_verified_at || 'No verificado'}</td>
                                             <td class="user-table__actions">
-                                                <button class="user-table__button user-table__button--edit">Editar</button>
-                                                <button class="user-table__button user-table__button--delete">Eliminar</button>
+                                                <button class="user-table__button user-table__button--edit" onclick="editarUsuario(${usuario.id})">Editar</button>
+                                                <button class="user-table__button user-table__button--delete" onclick="eliminarUsuario(${usuario.id})">Eliminar</button>
                                             </td>
                                         </tr>
                                     `;
                                     tableBody.innerHTML += row;
                                 });
                             } else {
-                                tableBody.innerHTML = '<tr><td colspan="6">No hay usuarios disponibles.</td></tr>';
+                                tableBody.innerHTML = '<tr><td colspan="7">No hay usuarios disponibles.</td></tr>';
                             }
                         })
                         .catch(error => {
                             console.error("Error al obtener la lista de usuarios:", error);
                         });
+                    }
+                
+                    
+                    
+                
+                    function eliminarUsuario(id) {
+                        if (confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
+                            fetch(`http://127.0.0.1:8000/api/update-user`, {
+                                method: "DELETE",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "Authorization": `Bearer ${token}`
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    alert("Usuario eliminado correctamente.");
+                                    fetchListaUsu(); // Actualizar la lista de usuarios
+                                } else {
+                                    alert("Error al eliminar el usuario.");
+                                }
+                            })
+                            .catch(error => {
+                                console.error("Error al eliminar el usuario:", error);
+                            });
+                        }
                     }
                 
                     // Llamar la función al cargar la página
@@ -84,5 +112,5 @@
     </main>
 </body>
 </html>
-    
+
 
