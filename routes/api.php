@@ -32,6 +32,8 @@ Route::post('/visualizar-boletos', [BoletoController::class, 'visualizarBoletos'
 Route::post('/registrar-incidente', [IncidenteController::class, 'registrarIncidente']);
 // Asegúrate de que no esté dentro de un grupo con autenticación
 Route::post('/register', [UserController::class, 'register'])->withoutMiddleware('auth:sanctum');
+Route::post('/solicitarContraseña', [UserController::class, 'solicitarContraseña']);
+Route::post('/cambiarContraseña', [UserController::class, 'cambiarContraseña']);
 
 
 
