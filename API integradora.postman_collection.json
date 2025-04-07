@@ -215,6 +215,44 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Forgot-password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "diegoramireztome@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "ContraseñaSegura123!",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/login",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -672,6 +710,153 @@
 								"api",
 								"corrida",
 								"view"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscador Avanzado",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"2|lilZzGLekizv1lN0MzOpoRvH89Thl423UbKcfAsrba519e10\",\r\n    \"origen\": \"Ciudad de México\",\r\n     \"destino\":\"Guadalajara\",\r\n    \"fecha_inicio\": \"2024-03-15\",\r\n    \"fecha_fin\": \"2024-03-20\",\r\n    \"precio_minimo\": 200,\r\n    \"hora_salida_inicio\":\"10:00\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/corrida/search",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"corrida",
+								"search"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reportes",
+			"item": [
+				{
+					"name": "Reporte Boletos",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"23|M68cTSHc1UkhKTyPqtXYiM1JHBlM1nL0hTG3Ab875bc6742f\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/reportes/boletos",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"reportes",
+								"boletos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reporte insidente",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"23|M68cTSHc1UkhKTyPqtXYiM1JHBlM1nL0hTG3Ab875bc6742f\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/reportes/insidente",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"reportes",
+								"insidente"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Incidente",
+			"item": [
+				{
+					"name": "Crea incidentes",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_corrida\": 1,\r\n    \"tipo_incidencia\": \"Retraso por falla mecánica\",\r\n    \"descripcion\": \"El autobús presenta problemas en el motor y requiere reparación antes de continuar\",\r\n    \"tiempo_estima_retraso\": \"02:30:00\",\r\n    \"evidencia\":null,\r\n    \"id_autobus\":1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/registrar-incidente",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"registrar-incidente"
 							]
 						}
 					},
