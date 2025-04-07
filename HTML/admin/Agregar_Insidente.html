@@ -52,4 +52,75 @@
     </section>
   </main>
 </body>
+<script>
+  document.querySelector('.add-incident-form__form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const token = localStorage.getItem('token');
+    const formData = new FormData();
+    
+    // Agregar campos al FormData
+    formData.append('autobusId', document.getElementById('autobusId').value);
+    formData.append('corridaId', document.getElementById('corridaId').value);
+    formData.append('tipoIncidente', document.getElementById('tipoIncidente').value);
+    formData.append('descripcion', document.getElementById('descripcion').value);
+    formData.append('tiempoRetraso', document.getElementById('tiempoRetraso').value);
+    formData.append('fecha', document.getElementById('fecha').value);
+    
+    // Agregar archivo si existe
+    const evidenciaInput = document.getElementById('evidencia');
+    if (evidenciaInput.files.length > 0) {
+        formData.append('evidencia', evidenciaInput.files[0]);
+    }
+    
+    try {
+        const response = await fetch("http://127.0.0.1:8000/api/incidentes", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`
+              
+            },
+            body: formData
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Error al registrar incidente');
+        }
+        
+        const data = await response.json();
+        alert('Incidente registrado exitosamente!');
+        window.location.href = 'lista_incidentes.html';
+    } catch (error) {
+        console.error("Error:", error);
+        alert('Error al registrar incidente: ' + error.message);
+    }
+});
+
+// Cargar tipos de incidente al cargar la página
+document.addEventListener('DOMContentLoaded', async function() {
+    try {
+        const response = await fetch("http://127.0.0.1:8000/api/incidentes/tipos");
+        if (!response.ok) throw new Error('Error al cargar tipos de incidente');
+        
+        const tipos = await response.json();
+        const select = document.getElementById('tipoIncidente');
+        
+        // Limpiar opciones excepto la primera
+        while (select.options.length > 1) {
+            select.remove(1);
+        }
+        
+        // Agregar opciones
+        tipos.forEach(tipo => {
+            const option = document.createElement('option');
+            option.value = tipo;
+            option.textContent = tipo.charAt(0).toUpperCase() + tipo.slice(1);
+            select.appendChild(option);
+        });
+    } catch (error) {
+        console.error("Error al cargar tipos de incidente:", error);
+    }
+});
+</script>
 </html>

@@ -150,6 +150,42 @@
             </form>
         </section>
     </main>
-    <script src="../js/corrida.js"></script>
+    <script>
+        document.getElementById('autobusForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = {
+            id: document.getElementById('id').value,
+            numero: document.getElementById('numero').value,
+            capacidad: parseInt(document.getElementById('asientos').value),
+            servicios: document.getElementById('servicios').value,
+            numeroIncidentes: parseInt(document.getElementById('incidentes').value),
+            estado: document.getElementById('estado').value.toUpperCase()
+        };
+    
+        const token = localStorage.getItem('token');
+        
+        fetch("http://127.0.0.1:8000.com/api/autobuses", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Error al crear autobús');
+            return response.json();
+        })
+        .then(data => {
+            alert('Autobús creado exitosamente!');
+            window.location.href = 'lista_autobuses.html';
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert('Error al crear el autobús: ' + error.message);
+        });
+    });
+    </script>
 </body>
 </html>
