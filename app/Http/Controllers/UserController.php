@@ -16,49 +16,69 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
+use App\Services\TwilioService;
+
 
 
 class UserController extends Controller
 {
-    public function register(Request $request)
-{
-    $validator = Validator::make($request->all(), [
-        'name' => 'required|string|max:255',
-        'apellido_p' => 'required|string|max:255',
-        'apellido_m' => 'required|string|max:255',
-        'email' => 'required|string|email|max:255|unique:users',
-        'telefono' => 'required|string|max:15',
-        'password' => 'required|string|min:12',
-    ]);
+    protected $correoService;
 
-    if ($validator->fails()) {
-        return response()->json($validator->errors(), 422);
+    public function __construct(TwilioService $correoService)
+    {
+        $this->correoService = $correoService;
     }
 
-    // Crear el usuario
-    $user = User::create([
-        'name' => $request->name,
-        'apellido_p' => $request->apellido_p,
-        'apellido_m' => $request->apellido_m,
-        'email' => $request->email,
-        'telefono' => $request->telefono,
-        'password' => bcrypt($request->password),
-    ]);
+    public function register(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'apellido_p' => 'required|string|max:255',
+            'apellido_m' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'telefono' => 'required|string|max:15',
+            'password' => 'required|string|min:12',
+        ]);
 
-    // Generar código de verificación
-    $verificationCode = rand(100000, 999999);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
 
-    // Guardar el código de verificación en la base de datos
-    $user->codigo_verificacion = $verificationCode;
-    $user->save();
+        // Crear el usuario
+        $user = User::create([
+            'name' => $request->name,
+            'apellido_p' => $request->apellido_p,
+            'apellido_m' => $request->apellido_m,
+            'email' => $request->email,
+            'telefono' => $request->telefono,
+            'password' => bcrypt($request->password),
+        ]);
 
-    // Enviar correo con el código de verificación
-    $user->notify(new VerifyEmailNotification($verificationCode));
+        // Generar código de verificación
+        $verificationCode = rand(100000, 999999);
 
-    return response()->json([
-        'message' => 'Usuario registrado con éxito. Se ha enviado un correo para verificar tu cuenta.',
-    ], 201);
-}
+        // Guardar el código de verificación en la base de datos
+        $user->codigo_verificacion = $verificationCode;
+        $user->save();
+        
+        // Enviar correo con el código de verificación
+        $user->notify(new VerifyEmailNotification($verificationCode));
+
+        // Enviar por WhatsApp
+        try {
+            $this->correoService->sendSms(
+                'whatsapp:+521'.$user->telefono,
+                "Tu código de verificación es: $verificationCode"
+            );
+        } catch (\Exception $e) {
+            Log::error("Error al enviar WhatsApp: " . $e->getMessage());
+            return response()->json(['message' => 'Usuario no encontrado.'], 404);
+        }
+
+        return response()->json([
+            'message' => 'Usuario registrado con éxito. Se ha enviado un correo para verificar tu cuenta.',
+        ], 201);
+    }
     
 
     public function registerU(Request $request)
@@ -98,97 +118,92 @@ class UserController extends Controller
     }
 
     // Dentro del controlador de login
-public function login(Request $request) {
-    // Validar los datos recibidos
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required',
-    ]);
+    public function login(Request $request) {
+        // Validar los datos recibidos
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-    // Buscar el usuario por correo
-    $user = User::where('email', $request->email)->first();
+        // Buscar el usuario por correo
+        $user = User::where('email', $request->email)->first();
 
-    if (!$user) {
-        return response()->json(['message' => 'Usuario no encontrado.'], 404);
+        if (!$user) {
+            return response()->json(['message' => 'Usuario no encontrado.'], 404);
+        }
+
+        // Verificar la contraseña
+        if (!Hash::check($request->password, $user->password)) {
+            return response()->json(['message' => 'Contraseña incorrecta.'], 400);
+        }
+
+        $token = $user->createToken('Token')->plainTextToken;
+        return response()->json([
+            'token' => $token,
+            'id' => $user->id,
+            'rol' => $user->rol
+        ]);
     }
 
-    // Verificar la contraseña
-    if (!Hash::check($request->password, $user->password)) {
-        return response()->json(['message' => 'Contraseña incorrecta.'], 400);
+    public function verificarCorreo(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|numeric',
+            'codigo_verificacion' => 'required|numeric',
+        ]);
+
+        // Buscar el usuario por ID
+        $user = User::find($request->id);
+
+        if (!$user) {
+            return response()->json(['message' => 'Usuario no encontrado.'], 404);
+        }
+
+        // Verificar si el correo ya está verificado
+        if ($user->email_verified_at) {
+            return response()->json(['message' => 'El correo ya está verificado.'], 200);
+        }
+
+        // Verificar el código de verificación
+        if ($user->codigo_verificacion != $request->codigo_verificacion) {
+            return response()->json(['message' => 'Código de verificación incorrecto.'], 400);
+        }
+
+        // Código correcto, verificar el correo
+        $user->email_verified_at = now();
+        $user->save();
+
+        return response()->json(['message' => 'Correo verificado con éxito.'], 200);
     }
 
-    $token = $user->createToken('Token')->plainTextToken;
-    return response()->json([
-        'token' => $token,
-        'id' => $user->id,
-        'rol' => $user->rol
-    ]);
-}
+    public function verifyEmail(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'codigo_verificacion' => 'required|numeric',
+        ]);
 
-public function verificarCorreo(Request $request)
-{
-    $request->validate([
-        'id' => 'required|numeric',
-        'codigo_verificacion' => 'required|numeric',
-    ]);
+        $user = User::where('email', $request->email)->first();
 
-    // Buscar el usuario por ID
-    $user = User::find($request->id);
+        if (!$user) {
+            return response()->json(['message' => 'Usuario no encontrado.'], 404);
+        }
 
-    if (!$user) {
-        return response()->json(['message' => 'Usuario no encontrado.'], 404);
+        // Verificar el código almacenado en la base de datos
+        if ($user->codigo_verificacion != $request->codigo_verificacion) {
+            return response()->json(['message' => 'Código de verificación incorrecto.'], 400);
+        }
+
+        dd($user);  // Muestra los datos del usuario después de la actualización
+        dd($user->codigo_verificacion, $request->codigo_verificacion);
+
+        
+        // Limpiar el código de verificación
+        $user->codigo_verificacion = null;
+        $user->save();
+
+        return response()->json(['message' => 'Correo verificado exitosamente.'], 200);
     }
-
-    // Verificar si el correo ya está verificado
-    if ($user->email_verified_at) {
-        return response()->json(['message' => 'El correo ya está verificado.'], 200);
-    }
-
-    // Verificar el código de verificación
-    if ($user->codigo_verificacion != $request->codigo_verificacion) {
-        return response()->json(['message' => 'Código de verificación incorrecto.'], 400);
-    }
-
-    // Código correcto, verificar el correo
-    $user->email_verified_at = now();
-    $user->save();
-
-    return response()->json(['message' => 'Correo verificado con éxito.'], 200);
-}
-
-
-public function verifyEmail(Request $request)
-{
-    $request->validate([
-        'email' => 'required|email',
-        'codigo_verificacion' => 'required|numeric',
-    ]);
-
-    $user = User::where('email', $request->email)->first();
-
-    if (!$user) {
-        return response()->json(['message' => 'Usuario no encontrado.'], 404);
-    }
-
-    // Verificar el código almacenado en la base de datos
-    if ($user->codigo_verificacion != $request->codigo_verificacion) {
-        return response()->json(['message' => 'Código de verificación incorrecto.'], 400);
-    }
-
-    
-
-    dd($user);  // Muestra los datos del usuario después de la actualización
-    dd($user->codigo_verificacion, $request->codigo_verificacion);
-
-    
-    // Limpiar el código de verificación
-    $user->codigo_verificacion = null;
-    $user->save();
-
-    return response()->json(['message' => 'Correo verificado exitosamente.'], 200);
-}
-
-    
 
     public function logout(Request $request)
     {

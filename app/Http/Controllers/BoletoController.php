@@ -8,9 +8,18 @@ use App\Models\Notificacion;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
+use App\Services\TwilioService; // Asegúrate de tener el servicio de Twilio
 
 class BoletoController extends Controller
 {
+
+    protected $twilioService;
+
+    public function __construct(TwilioService $twilioService)
+    {
+        $this->twilioService = $twilioService;
+    }
+
     // Compra de boletos
     public function comprarBoleto(Request $request)
     {
@@ -59,13 +68,21 @@ class BoletoController extends Controller
             'id_pago' => 1, // Simulado
             'estado' => 1,  // Activo
         ]);
+
+        // Enviar mensaje de confirmación por WhatsApp
+        try {
+            $this->twilioService->sendSms(
+                'whatsapp:+521' . $user->telefono,
+                "¡Hola {$user->name}!\nTu compra de boleto fue exitosa.\nBoleto número: {$boleto->num_boleto}\nAsientos: " . implode(", ", $validated['asientos']) . "\nMonto: $ {$boleto->monto}\nFecha de compra: {$boleto->fecha_compra}\nGracias por elegirnos."
+            );
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error al enviar notificación por WhatsApp: ' . $e->getMessage()], 500);
+        }
     
         return response()->json(['message' => 'Boleto comprado con éxito', 'boleto' => $boleto]);
     }
     
-    
-
- // Cancelar boletos
+    // Cancelar boletos
     public function cancelarBoleto(Request $request)
     {
         $token = $request->input('token');
@@ -88,8 +105,19 @@ class BoletoController extends Controller
         $boleto->estado = 0; // Cancelado
         $boleto->save();
 
+        // Enviar mensaje de cancelación por WhatsApp
+        try {
+            $this->twilioService->sendSms(
+                'whatsapp:' . $user->telefono,
+                "Tu boleto ha sido cancelado. Boleto número: {$boleto->num_boleto}."
+            );
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error al enviar notificación de cancelación por WhatsApp: ' . $e->getMessage()], 500);
+        }
+
         return response()->json(['message' => 'Boleto cancelado con éxito']);
     }
+    
     // Visualizar boletos
     public function visualizarBoletos(Request $request)
     {
