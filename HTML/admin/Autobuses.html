@@ -6,8 +6,8 @@
     <title>Lista de Autobuses</title>
     <link rel="stylesheet" href="../estilos.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  </head>
-  <body>
+</head>
+<body>
     <div class="header">
         <img src="../img/ADO-Autobuses-de-Oriente-Logo-700x394.png" alt="ADO Logo">
         <div class="nav-links">
@@ -19,130 +19,77 @@
     <main class="main">
         <section class="bus-list">
             <h2 class="bus-list__title">Lista de Autobuses</h2>
-            <button class="bus-list__button bus-list__button--edit" onclick="location.href='Agregar_bus.html'">Agregar Autobús</button>
+            <!--button class="bus-list__button bus-list__button--edit" onclick="location.href='Agregar_bus.html'">Agregar Autobús</-button-->
             <table class="user-table__data">
-                <!--thead>
+                <thead>
                     <tr>
-                        <th>Id</th>
-                        <th>a</th>
-                        <th>a</th>
-                        <th>a</th>
-                        <th>Ta</th>
-                        <th>Autobus</th>
-                        <th>Estatus</th>
+                        <th>ID</th>
+                        <th>Número de Autobús</th>
+                        <th>Línea</th>
+                        <th>Capacidad</th>
+                        <th>Servicios</th>
+                        <th>Incidencias</th>
                     </tr>
-                </thead!-->
-            <table class="user-table__data">
-            <ul class="bus-list__items">
-            <ul class="bus-list__items">
-                <li class="bus-list__item">
-                    <div class="bus-list__details">
-                        <i class="fas fa-bus bus-list__icon"></i>
-                        <span class="bus-list__number">Autobús #123</span>
-                        <span class="bus-list__line">Línea: ADO GL</span>
-                    </div>
-                    <div class="bus-list__actions">
-                        <button class="bus-list__button bus-list__button--edit">Editar</button>
-                        <button class="bus-list__button bus-list__button--delete">Eliminar</button>
-                    </div>
-                </li>
-                <li class="bus-list__item">
-                    <div class="bus-list__details">
-                        
-                    </div>
-                    <div class="bus-list__actions">
-                        <button class="bus-list__button bus-list__button--edit">Editar</button>
-                        <button class="bus-list__button bus-list__button--delete">Eliminar</button>
-                    </div>
-                </li>
-             
-                  
-            </ul>
+                </thead>
+                <tbody id="busTableBody">
+                    <!-- Los datos de los autobuses se insertarán aquí dinámicamente -->
+                </tbody>
+            </table>
         </section>
     </main>
 </body>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-    const token = localStorage.getItem('token');
-    const busList = document.querySelector('.bus-list__items');
-    
-    // Limpiar lista existente
-    busList.innerHTML = '';
+    // Función para obtener y mostrar los autobuses
+    async function fetchAutobuses() {
+        const token = localStorage.getItem('token'); // Obtener el token del localStorage
 
-    fetch("http://tu-api.com/api/autobuses/lista", {
-        method: "GET",
-        headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
-        }
-    })
-    .then(response => {
-        if (!response.ok) throw new Error('Error al cargar autobuses');
-        return response.json();
-    })
-    .then(data => {
-        if (data.length === 0) {
-            busList.innerHTML = '<li class="bus-list__item">No hay autobuses registrados</li>';
+        if (!token) {
+            console.error('No se encontró un token en el localStorage.');
             return;
         }
 
-        data.forEach(autobus => {
-            const busItem = document.createElement('li');
-            busItem.className = 'bus-list__item';
-            busItem.innerHTML = `
-                <div class="bus-list__details">
-                    <i class="fas fa-bus bus-list__icon"></i>
-                    <span class="bus-list__number">Autobús #${autobus.numero}</span>
-                    <span class="bus-list__line">Línea: ${autobus.linea}</span>
-                    <span class="bus-list__status">Estado: ${autobus.estado === 'ACTIVO' ? '✅ Activo' : '❌ Inactivo'}</span>
-                </div>
-                <div class="bus-list__actions">
-                    <button class="bus-list__button bus-list__button--edit" onclick="editarAutobus('${autobus.id}')">
-                        Editar
-                    </button>
-                    <button class="bus-list__button bus-list__button--delete" onclick="eliminarAutobus('${autobus.id}')">
-                        Eliminar
-                    </button>
-                </div>
-            `;
-            busList.appendChild(busItem);
-        });
-    })
-    .catch(error => {
-        console.error("Error:", error);
-        busList.innerHTML = '<li class="bus-list__item">Error al cargar la lista de autobuses</li>';
-    });
-});
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/autobus/view', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ token: token }), // Enviar el token en el cuerpo de la solicitud
+            });
 
-function editarAutobus(id) {
-    localStorage.setItem('autobusId', id);
-    window.location.href = 'editar_bus.html';
-}
+            if (!response.ok) {
+                throw new Error(`Error en la solicitud: ${response.statusText}`);
+            }
 
-function eliminarAutobus(id) {
-    const token = localStorage.getItem('token');
-    
-    if (!confirm(`¿Estás seguro de eliminar el autobús #${id}?`)) {
-        return;
+            const data = await response.json();
+            const autobuses = data.autobuses;
+
+            // Obtener el cuerpo de la tabla
+            const tableBody = document.getElementById('busTableBody');
+            tableBody.innerHTML = ''; // Limpiar contenido previo
+
+            // Iterar sobre los autobuses y agregarlos a la tabla
+            autobuses.forEach(autobus => {
+                const row = document.createElement('tr');
+
+                row.innerHTML = `
+                    <td>${autobus.id}</td>
+                    <td>${autobus.numero_autobus}</td>
+                    <td>${autobus.linea}</td>
+                    <td>${autobus.capacidad}</td>
+                    <td>${autobus.servicios}</td>
+                    <td>${autobus.num_incidencia}</td>
+
+                `;
+
+                tableBody.appendChild(row);
+            });
+        } catch (error) {
+            console.error('Error al realizar la solicitud:', error);
+        }
     }
 
-    fetch(`http://127.0.0.1:8000/api/autobuses/${id}`, {
-        method: "DELETE",
-        headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
-        }
-    })
-    .then(response => {
-        if (!response.ok) throw new Error('Error al eliminar autobús');
-        alert('Autobús eliminado exitosamente');
-        location.reload(); // Recargar la lista
-    })
-    .catch(error => {
-        console.error("Error:", error);
-        alert('Error al eliminar el autobús: ' + error.message);
-    });
-}
+    // Llamar a la función para cargar los autobuses al cargar la página
+    document.addEventListener('DOMContentLoaded', fetchAutobuses);
 </script>
-
 </html>
