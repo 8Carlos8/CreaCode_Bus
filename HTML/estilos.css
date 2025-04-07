@@ -1085,6 +1085,7 @@ main {
   margin: 0;
   padding: 20px; /* Espaciado interno opcional */
   background-color: #f9f9f9; /* Fondo opcional */
+  border-radius: 5px;
 }
 
 .user-table__title {
