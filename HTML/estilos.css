@@ -1079,98 +1079,97 @@ main {
 }
 
 /*Esta seccion es el estilo de tabla de usuario*/
-.user-table {
-  max-width: 1000px;
-  margin: 20px auto;
-  padding: 30px;
-  background: #f9f9f9;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+
+.user-table-container {
+  display: grid;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  height: 1000px; /* Ocupa toda la altura de la pantalla */
+  width: 1000px; /* Ocupa todo el ancho de la pantalla */
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9; /* Fondo opcional */
 }
 
-.user-table__title {
-  text-align: center;
-  margin-bottom: 30px;
-  font-size: 28px;
-  color: #333;
-  font-weight: 600;
+.user-table {
+  width: auto; /* Ajusta el ancho automáticamente al contenido */
+  max-width: 1200px; /* Ancho máximo */
+  border-collapse: collapse;
+  background: #fff; /* Fondo blanco */
+  border-radius: 12px; /* Bordes redondeados */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra */
 }
 
 .user-table__data {
   width: 100%;
   border-collapse: collapse;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.user-table__data thead {
-  background-color: #FCF0E3;
 }
 
 .user-table__data thead th {
+  background-color: #d32f2f; /* Fondo rojo para el encabezado */
+  color: #fff; /* Texto blanco */
   text-align: left;
   padding: 15px;
   font-size: 16px;
-  color: #333;
-  border-bottom: 2px solid #ddd;
-}
-
-.user-table__data tbody tr:nth-child(even) {
-  background-color: #FEE9E0;
-}
-
-.user-table__data tbody tr:nth-child(odd) {
-  background-color: #fff;
+  font-weight: bold;
+  text-transform: uppercase; /* Texto en mayúsculas */
 }
 
 .user-table__data tbody td {
+  text-align: left;
   padding: 15px;
   font-size: 14px;
   color: #555;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #eee; /* Línea divisoria */
 }
 
-.user-table__data tbody tr:last-child td {
-  border-bottom: none;
+.user-table__data tbody tr:nth-child(even) {
+  background-color: #fef6f6; /* Fondo suave para filas pares */
 }
 
-.user-table__actions {
-  display: flex;
-  justify-content: center; /* Centra los botones en la celda */
+.user-table__data tbody tr:nth-child(odd) {
+  background-color: #fff; /* Fondo blanco para filas impares */
+}
+
+.user-table__data tbody tr:hover {
+  background-color: #fce4ec; /* Fondo rosado al pasar el cursor */
+  cursor: pointer; /* Cambia el cursor al pasar por una fila */
+}
+
+.user-table__data tbody td:first-child {
+  font-weight: bold; /* Resalta la primera columna */
+}
+
+.user-table__data tbody td:last-child {
+  text-align: center; /* Centra la última columna */
 }
 
 .user-table__button {
-  padding: 10px 15px;
+  padding: 8px 12px;
   border: none;
-  border-radius: 8px;
+  border-radius: 5px;
+  font-size: 14px;
   cursor: pointer;
-  font-weight: 500;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .user-table__button--edit {
-  background-color: #e0f7fa;
-  color: #00838f;
-  margin-right: 10px;
+  background-color: #4caf50; /* Verde */
+  color: #fff;
 }
 
 .user-table__button--edit:hover {
-  background-color: #b2ebf2;
+  background-color: #388e3c; /* Verde más oscuro */
 }
 
 .user-table__button--delete {
-  background-color: #ffebee;
-  color: #d32f2f;
+  background-color: #f44336; /* Rojo */
+  color: #fff;
 }
 
 .user-table__button--delete:hover {
-  background-color: #ffcdd2;
+  background-color: #d32f2f; /* Rojo más oscuro */
 }
 
-.user-table__button:hover {
-  transform: translateY(-2px);
-}
 
-.user-table__button:active {
-  transform: translateY(1px);
-}
+

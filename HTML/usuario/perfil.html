@@ -11,8 +11,6 @@
         <img src="../img/ADO-Autobuses-de-Oriente-Logo-700x394.png" alt="ADO Logo">
         <div class="nav-links">
           <a href="../usuario/inicio.html">Inicio</a>
-      
-          <!-- Menú desplegable para Boletos -->
           <div class="dropdown">
             <a href="#" class="dropbtn">Boletos</a>
             <div class="dropdown-content">
@@ -22,13 +20,11 @@
                 <a href="../usuario/ver-boleto.html">Ver boleto</a>
             </div>
           </div>
-      
-          <!-- Enlace simple para Perfil -->
-         
-          <a href="../usuario/corridas.html">Corridas</a> <a href="../usuario/perfil.html">Perfil</a>
-      
+          <a href="../usuario/corridas.html">Corridas</a> 
+          <a href="../usuario/perfil.html">Perfil</a>
           <a href="../index.html" class="logout-button">Cerrar Sesión</a>
-      </div>  </div>
+      </div>
+    </div>
       
   <div class="container">
     <div class="header2">
@@ -36,49 +32,127 @@
       <h2>Edita tu Perfil</h2>
     </div>
     
+    <!-- Nuevo apartado para insertar código de verificación -->
     <div class="section">
+      <label for="codigo-verificacion">Código de Verificación</label>
+      <div class="input-box">
+        <input type="text" id="codigo-verificacion" placeholder="Escribe tu código de verificación" style="flex: 1; border: none; outline: none;">
+        <button id="verificar-codigo">Verificar Código</button>
+      </div>
+    </div>
+
+    <!-- Campos de perfil -->
+    <div class="section" id="nombre-section" style="display: none;">
       <label for="nombre">Nombre</label>
       <div class="input-box">
         <input type="text" id="nombre" placeholder="Escribe tu nombre" style="flex: 1; border: none; outline: none;">
-        <button>Editar</button>
+        <button id="editar-nombre">Editar</button>
       </div>
     </div>
-    
-    <div class="section">
+
+    <div class="section" id="apellido-paterno-section" style="display: none;">
       <label for="apellido-paterno">Apellido Paterno</label>
       <div class="input-box">
         <input type="text" id="apellido-paterno" placeholder="Escribe tu apellido paterno" style="flex: 1; border: none; outline: none;">
-        <button>Editar</button>
+        <button id="editar-apellido-paterno">Editar</button>
       </div>
     </div>
     
-    <div class="section">
-      <label for="apellido-materno">Apellido Materno</label>
-      <div class="input-box">
-        <input type="text" id="apellido-materno" placeholder="Escribe tu apellido materno" style="flex: 1; border: none; outline: none;">
-        <button>Editar</button>
-      </div>
-    </div>
-    
-    <div class="section">
-      <label for="telefono">Teléfono</label>
-      <div class="input-box">
-        <input type="text" id="telefono" placeholder="Escribe tu teléfono" style="flex: 1; border: none; outline: none;">
-        <button>Editar</button>
-      </div>
-    </div>
-    
-    <div class="section">
-      <label for="correo">Correo Electrónico</label>
-      <div class="input-box">
-        <input type="email" id="correo" placeholder="Escribe tu correo electrónico" style="flex: 1; border: none; outline: none;">
-        <button>Editar</button>
-      </div>
-    </div>
+    <!-- Otros campos aquí... -->
     
     <div class="delete-account">
-      <button>Eliminar Cuenta</button>
+      <button id="eliminar-cuenta">Eliminar Cuenta</button>
     </div>
   </div>
+
+  <script>
+    // Función para verificar el código de verificación
+    document.getElementById('verificar-codigo').addEventListener('click', function() {
+      const codigoVerificacion = document.getElementById('codigo-verificacion').value.trim();
+      if (!codigoVerificacion) {
+        alert("Por favor, ingresa el código de verificación.");
+        return;
+      }
+
+      // Solicitud al servidor para verificar el código (ejemplo)
+      fetch('/api/verificar-codigo', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ codigo: codigoVerificacion })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.verificado) {
+          alert("Código verificado correctamente. Ahora puedes editar tu perfil.");
+          document.getElementById('nombre-section').style.display = "block";
+          document.getElementById('apellido-paterno-section').style.display = "block";
+          // Mostrar otros campos según sea necesario
+        } else {
+          alert("Código de verificación incorrecto.");
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Hubo un problema al verificar el código.');
+      });
+    });
+
+    // Función para manejar la edición de campos
+    function editarCampo(idInput, campo) {
+      const input = document.getElementById(idInput);
+      const valor = input.value;
+
+      if (!valor) {
+        alert(`Por favor, ingresa un valor para ${campo}.`);
+        return;
+      }
+
+      // Solicitud al servidor
+      fetch('/api/editar-perfil', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ campo, valor })
+      })
+      .then(response => {
+        if (response.ok) {
+          alert(`${campo} actualizado correctamente.`);
+        } else {
+          alert(`Error al actualizar ${campo}.`);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Hubo un problema al conectar con el servidor.');
+      });
+    }
+
+    // Asignar eventos a los botones de edición
+    document.getElementById('editar-nombre').addEventListener('click', () => editarCampo('nombre', 'Nombre'));
+    document.getElementById('editar-apellido-paterno').addEventListener('click', () => editarCampo('apellido-paterno', 'Apellido Paterno'));
+    // Asignar otros eventos de edición aquí...
+
+    // Manejar eliminación de cuenta
+    document.getElementById('eliminar-cuenta').addEventListener('click', () => {
+      if (confirm('¿Estás seguro de que deseas eliminar tu cuenta?')) {
+        fetch('/api/eliminar-cuenta', { method: 'DELETE' })
+          .then(response => {
+            if (response.ok) {
+              alert('Cuenta eliminada correctamente.');
+              window.location.href = '../index.html';
+            } else {
+              alert('Error al eliminar la cuenta.');
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            alert('Hubo un problema al conectar con el servidor.');
+          });
+      }
+    });
+  </script>
 </body>
 </html>
