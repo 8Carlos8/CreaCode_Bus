@@ -13,26 +13,31 @@
       <div class="nav-links">
         <a href="index1.html">Inicio</a>
         <a href="../index.html" id="logoutButton" name="logoutButton" class="logout-button">Cerrar Sesión</a>
-      </div>  
+      </div>
   </div>
 <body>
   <main class="main">
     <section class="add-incident-form">
       <h2 class="form__title">Agregar Incidente</h2>
-      <form class="add-incident-form__form">
-        <label for="autobusId" style="display: flex;  width: 100%;">ID de Autobús:</label>
-        <input type="number" id="autobusId" name="autobusId" required>
+      <form class="add-incident-form__form" id="incidenteForm">
+        <label for="autobusId" style="display: flex; width: 100%;">Autobús:</label>
+        <select id="autobusId" name="autobusId" required>
+          <option value="">Seleccione un autobús</option>
+        </select>
 
-        <label for="corridaId" style="display: flex;  width: 100%;">ID de Corrida:</label>
-        <input type="number" id="corridaId" name="corridaId" required>
+        <label for="corridaId" style="display: flex; width: 100%;">Corrida:</label>
+        <select id="corridaId" name="corridaId" required>
+          <option value="">Seleccione una corrida</option>
+        </select>
 
         <label for="tipoIncidente" style="display: flex;  width: 100%;">Tipo de Incidente:</label>
         <select id="tipoIncidente" name="tipoIncidente" required>
           <option value="">Seleccione un tipo</option>
-          <option value="accidente">Accidente</option>
-          <option value="retraso">Retraso</option>
-          <option value="averia">Avería</option>
-          <option value="otro">Otro</option>
+          <option value="Accidente">Accidente</option>
+          <option value="Retraso por falla mecánica">Retraso por falla mecánica</option>
+          <option value="Retraso por tráfico">Retraso por tráfico</option>
+          <option value="Avería">Avería</option>
+          <option value="Otro">Otro</option>
         </select>
 
         <label for="descripcion" style="display: flex;  width: 100%;">Descripción:</label>
@@ -41,86 +46,177 @@
         <label for="evidencia" style="display: flex;  width: 100%;">Evidencia (Foto):</label>
         <input type="file" id="evidencia" name="evidencia" accept="image/*">
 
-        <label for="tiempoRetraso" style="display: flex;  width: 100%;">Tiempo de Retraso Estimado (minutos):</label>
-        <input type="number" id="tiempoRetraso" name="tiempoRetraso">
-
-        <label for="fecha" style="display: flex;  width: 100%;">Fecha:</label>
-        <input type="date" id="fecha" name="fecha" required>
+        <label for="tiempoRetraso" style="display: flex; width: 100%;">Tiempo de Retraso Estimado:</label>
+        <input type="time" id="tiempoRetraso" name="tiempoRetraso" step="1" placeholder="HH:MM:SS">
 
         <button type="submit" class="add-incident-form__submit-btn">Guardar Incidente</button>
       </form>
+      <div id="statusMessage" style="margin-top: 15px;"></div>
     </section>
   </main>
 </body>
 <script>
-  document.querySelector('.add-incident-form__form').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    const token = localStorage.getItem('token');
-    const formData = new FormData();
-    
-    // Agregar campos al FormData
-    formData.append('autobusId', document.getElementById('autobusId').value);
-    formData.append('corridaId', document.getElementById('corridaId').value);
-    formData.append('tipoIncidente', document.getElementById('tipoIncidente').value);
-    formData.append('descripcion', document.getElementById('descripcion').value);
-    formData.append('tiempoRetraso', document.getElementById('tiempoRetraso').value);
-    formData.append('fecha', document.getElementById('fecha').value);
-    
-    // Agregar archivo si existe
-    const evidenciaInput = document.getElementById('evidencia');
-    if (evidenciaInput.files.length > 0) {
-        formData.append('evidencia', evidenciaInput.files[0]);
+    document.addEventListener('DOMContentLoaded', () => {
+    const token = localStorage.getItem("token"); // Obtén el token del localStorage
+  
+    if (!token) {
+      console.error("No hay token disponible. Por favor, inicia sesión.");
+      return;
     }
-    
-    try {
-        const response = await fetch("http://127.0.0.1:8000/api/incidentes", {
-            method: "POST",
-            headers: {
-                "Authorization": `Bearer ${token}`
-              
-            },
-            body: formData
-        });
-        
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'Error al registrar incidente');
-        }
-        
-        const data = await response.json();
-        alert('Incidente registrado exitosamente!');
-        window.location.href = 'lista_incidentes.html';
-    } catch (error) {
-        console.error("Error:", error);
-        alert('Error al registrar incidente: ' + error.message);
-    }
-});
+  
+    // Fetch para obtener los autobuses
+    const fetchAutobuses = () => {
+      const apiUrl = "http://127.0.0.1:8000/api/autobus/view";
+  
+      fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token: token }), // Enviar el token en el cuerpo de la solicitud
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Error al obtener los autobuses: ${response.statusText}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          if (data.autobuses) {
+            populateAutobusSelect(data.autobuses);
+          } else {
+            console.error("No se encontraron autobuses.");
+          }
+        })
+        .catch((error) => console.error("Error en la petición fetch:", error));
+    };
+  
+    // Llenar el select con los autobuses
+    const populateAutobusSelect = (autobuses) => {
+      const selectAutobus = document.querySelector("#autobusId");
+      autobuses.forEach((autobus) => {
+        const option = document.createElement("option");
+        option.value = autobus.id; // El valor será el ID del autobús
+        option.textContent = autobus.numero_autobus; // Mostrar el nombre del autobús
+        selectAutobus.appendChild(option);
+      });
+    };
+  
+    // Llamar a la función para obtener los autobuses
+    fetchAutobuses();
+  });
 
-// Cargar tipos de incidente al cargar la página
-document.addEventListener('DOMContentLoaded', async function() {
-    try {
-        const response = await fetch("http://127.0.0.1:8000/api/incidentes/tipos");
-        if (!response.ok) throw new Error('Error al cargar tipos de incidente');
-        
-        const tipos = await response.json();
-        const select = document.getElementById('tipoIncidente');
-        
-        // Limpiar opciones excepto la primera
-        while (select.options.length > 1) {
-            select.remove(1);
-        }
-        
-        // Agregar opciones
-        tipos.forEach(tipo => {
-            const option = document.createElement('option');
-            option.value = tipo;
-            option.textContent = tipo.charAt(0).toUpperCase() + tipo.slice(1);
-            select.appendChild(option);
-        });
-    } catch (error) {
-        console.error("Error al cargar tipos de incidente:", error);
+  document.addEventListener('DOMContentLoaded', () => {
+    const token = localStorage.getItem("token"); // Obtén el token del localStorage
+
+    if (!token) {
+      console.error("No hay token disponible. Por favor, inicia sesión.");
+      return;
     }
-});
+
+    // Fetch para obtener las corridas
+    const fetchCorridas = () => {
+      const apiUrl = "http://127.0.0.1:8000/api/corrida/view";
+
+      fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token: token }), // Enviar el token en el cuerpo de la solicitud
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Error al obtener las corridas: ${response.statusText}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          if (data.corridas) {
+            populateCorridasSelect(data.corridas);
+          } else {
+            console.error("No se encontraron corridas.");
+          }
+        })
+        .catch((error) => console.error("Error en la petición fetch:", error));
+    };
+
+    // Llenar el select con las corridas
+    const populateCorridasSelect = (corridas) => {
+      const selectCorrida = document.querySelector("#corridaId");
+      selectCorrida.innerHTML = '<option value="">Seleccione una corrida</option>'; // Limpia el select antes de llenarlo
+      corridas.forEach((corrida) => {
+        const option = document.createElement("option");
+        option.value = corrida.id; // El valor será el ID de la corrida
+        option.textContent = `${corrida.origen} - ${corrida.destino}`; // Mostrar origen y destino
+        selectCorrida.appendChild(option);
+      });
+    };
+
+    // Llamar a la función para obtener las corridas
+    fetchCorridas();
+  });
+  
+  // Espera a que el DOM esté completamente cargado
+  document.addEventListener('DOMContentLoaded', () => {
+
+    const token = localStorage.getItem("token"); // Obtén el token del localStorage
+    const form = document.getElementById('incidenteForm');
+    const statusMessage = document.getElementById('statusMessage'); // Para mostrar mensajes
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      statusMessage.textContent = 'Enviando...';
+
+      const formData = new FormData();
+      const idAutobus = document.getElementById('autobusId').value;
+      const idCorrida = document.getElementById('corridaId').value;
+      const tipoIncidencia = document.getElementById('tipoIncidente').value;
+      const descripcion = document.getElementById('descripcion').value;
+      const tiempoRetraso = document.getElementById('tiempoRetraso').value; // HH:MM:SS
+      const evidenciaInput = document.getElementById('evidencia');
+      const token = localStorage.getItem("token"); // Obtén el token del localStorage
+      formData.append('token', token); // Agrega el token al FormData
+      formData.append('id_autobus', idAutobus);
+      formData.append('id_corrida', idCorrida);
+      formData.append('tipo_incidencia', tipoIncidencia);
+      formData.append('descripcion', descripcion);
+      formData.append('tiempo_estima_retraso', tiempoRetraso); // Ya está en el formato correcto
+
+      if (evidenciaInput.files.length > 0) {
+        formData.append('evidencia', evidenciaInput.files[0]);
+      } else {
+        formData.append('evidencia', '');
+      }
+
+      fetch('http://127.0.0.1:8000/api/registrar-incidente', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: formData,
+      })
+        .then(response => {
+          if (!response.ok) {
+            return response.json().then(err => {
+              throw new Error(`Error del servidor: ${response.status} ${response.statusText}. Detalles: ${JSON.stringify(err)}`);
+            });
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Respuesta exitosa:', data);
+          statusMessage.textContent = 'Incidente registrado con éxito!';
+          statusMessage.style.color = 'green';
+          form.reset();
+          window.location.href = 'insidentes.html';
+        })
+        .catch(error => {
+          console.error('Error en la petición fetch:', error);
+          statusMessage.textContent = `Error al registrar incidente: ${error.message}`;
+          statusMessage.style.color = 'red';
+        });
+    });
+  });
 </script>
 </html>

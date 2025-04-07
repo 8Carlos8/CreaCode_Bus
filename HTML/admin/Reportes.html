@@ -6,8 +6,83 @@
     <title>Reportes</title>
     <link rel="stylesheet" href="../estilos.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  </head>
-  <body>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Librería para gráficos -->
+    <style>
+            /* Estilos para los filtros */
+/* Estilos para los filtros */
+.reportes-filtros {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto 20px;
+}
+
+.reportes-filtros__label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.reportes-filtros__input {
+    padding: 5px;
+    font-size: 14px;
+    width: auto;
+    flex: 1;
+    min-width: 20px;
+    box-sizing: border-box;
+}
+
+.reportes-filtros__button {
+    padding: 8px 12px;
+    font-size: 14px;
+  
+    color: white;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+
+      
+      /* Estilos para la tabla de reportes */
+      .reportes-tabla-container {
+          display: flex;
+          justify-content: center;
+          margin-top: 20px;
+      }
+      
+      .user-table__data {
+          width: 90%;
+          max-width: 1200px;
+          border-collapse: collapse;
+          text-align: center;
+      }
+      
+      .user-table__data th,
+      .user-table__data td {
+          border: 1px solid #ddd;
+          padding: 8px;
+      }
+      
+      .user-table__data th {
+          background-color: #f4f4f4;
+          font-weight: bold;
+      }
+      
+      /* Estilos para el gráfico */
+      .reportes-grafico {
+          display: block;
+          margin: 20px auto;
+          max-width: 90%;
+      }
+    </style>
+</head>
+<body>
     <div class="header">
         <img src="../img/ADO-Autobuses-de-Oriente-Logo-700x394.png" alt="ADO Logo">
         <div class="nav-links">
@@ -18,9 +93,298 @@
 
     <main class="main">
         <section class="boletaje">
-            <h2 class="boletaje__title">Reportes </h2>
+            <h2 class="boletaje__title">Reportes</h2>
             <p class="boletaje__description">Bienvenido al sistema de boletaje. Aquí podrás gestionar la venta de boletos.</p>
-            </section>
+            
+            <!-- Filtros -->
+            <form id="filtrosForm" class="filtros-form reportes-filtros">
+                <label for="fechaInicio" class="reportes-filtros__label">Fecha Inicio:</label>
+                <input type="date" id="fechaInicio" name="fechaInicio" class="reportes-filtros__input">
+
+                <label for="fechaFin" class="reportes-filtros__label">Fecha Fin:</label>
+                <input type="date" id="fechaFin" name="fechaFin" class="reportes-filtros__input">
+
+                <label for="estado" class="reportes-filtros__label">Estado:</label>
+                <select id="estado" name="estado" class="reportes-filtros__input">
+                    <option value="">Todos</option>
+                    <option value="1">Activo</option>
+                    <option value="0">Cancelado</option>
+                </select>
+
+                <label for="idCorrida" class="reportes-filtros__label"> Corrida:</label>
+                <select id="idCorrida" name="idCorrida" class="reportes-filtros__input">
+                    <option value="">Selecciona una corrida</option>
+                </select>
+
+                <button type="button" id="aplicarFiltros" class="reportes-filtros__button">Aplicar Filtros</button>
+            </form>
+
+            <!-- Contenedor para el reporte -->
+            <div id="reporteContainer" class="reportes-tabla-container"></div>
+
+            <!-- Contenedor para el gráfico -->
+            <canvas id="graficoMontos" width="400" height="200" class="reportes-grafico"></canvas>
+
+            <!-- Contenedor para el gráfico de boletos vendidos -->
+            <canvas id="graficoVendidos" width="400" height="200" class="reportes-grafico"></canvas>
+        </section>
     </main>
+
+    <script>
+// Asegúrate de establecer el token correctamente
+        document.addEventListener("DOMContentLoaded", () => {
+            const token = localStorage.getItem("token");
+
+            if (!token) {
+                console.error("No hay token disponible. Por favor, inicia sesión.");
+                return;
+            }
+
+            // Fetch para obtener las corridas
+            const fetchCorridas = () => {
+                const apiUrl = "http://127.0.0.1:8000/api/corrida/view";
+
+                fetch(`${apiUrl}?token=${token}`, {
+                    method: "post",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.corridas) {
+                            populateCorridasSelect(data.corridas);
+                        } else {
+                            console.error("No se encontraron corridas.");
+                        }
+                    })
+                    .catch((error) => console.error("Error al obtener las corridas:", error));
+            };
+
+            // Llenar el select con las corridas
+            const populateCorridasSelect = (corridas) => {
+                const selectCorrida = document.querySelector("#idCorrida");
+                corridas.forEach((corrida) => {
+                    const option = document.createElement("option");
+                    option.value = corrida.id;
+                    option.textContent = `${corrida.origen} - ${corrida.destino}`;
+                    selectCorrida.appendChild(option);
+                });
+            };
+
+            // Llamar a la función para obtener las corridas
+            fetchCorridas();
+
+            let chartInstance; // Variable para almacenar la instancia del gráfico
+            let chartInstanceVendidos; // Variable para almacenar la instancia del gráfico de vendidos
+            let chartInstanceAsientosVendidos; // Variable para almacenar la instancia del gráfico de asientos vendidos
+
+            const fetchReportesBoletos = (filtros = {}) => {
+                const apiUrl = "http://127.0.0.1:8000/api/reportes/boletos";
+
+                // Convertir los filtros en parámetros de consulta
+                const queryParams = new URLSearchParams({
+                    token: token, // Agregar el token como parámetro
+                    ...filtros,   // Agregar los filtros dinámicamente
+                }).toString();
+
+                fetch(`${apiUrl}?${queryParams}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.message) {
+                            console.log(data.message);
+                        }
+
+                        if (data.reporte) {
+                            console.log("Reporte de boletos vendidos:", data.reporte);
+                            renderReporte(data.reporte.data); // Renderizar los datos en la página
+                            renderGrafico(data.reporte.data); // Renderizar el gráfico de montos
+                            renderGraficoAsientosVendidos(data.reporte.data); // Renderizar el gráfico de asientos vendidos
+                        }
+                    })
+                    .catch((error) => console.error("Error al obtener el reporte:", error));
+            };
+
+            const renderReporte = (boletos) => {
+                const reporteContainer = document.querySelector("#reporteContainer");
+                if (boletos.length === 0) {
+                    reporteContainer.innerHTML = "<p>No se encontraron boletos para los filtros aplicados.</p>";
+                    return;
+                }
+
+                reporteContainer.innerHTML = `
+                    <table class="user-table__data">
+                        <thead>
+                            <tr>
+                                <th>ID Boleto</th>
+                                <th>Número de Boleto</th>
+                                <th>Usuario</th>
+                                
+                                <th>Origen</th>
+                                <th>Destino</th>
+                                <th>Fecha de Corrida</th>
+                                <th>Hora de Salida</th>
+                                <th>Número de Asientos</th>
+                                <th>Fecha de Compra</th>
+                                <th>Monto</th>
+                                <th>Descuento</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${boletos
+                              .map(
+                              (boleto) => {
+                                const horaSalida = new Date(`1970-01-01T${boleto.corrida.hora_salida}`);
+                                const horaSalidaFormatted = horaSalida.toLocaleTimeString("en-US", {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                hour12: true,
+                                });
+                                return `
+                                <tr>
+                                  <td>${boleto.id}</td>
+                                  <td>${boleto.num_boleto}</td>
+                                  <td>${boleto.user.name} ${boleto.user.apellido_p}</td>
+                                
+                                  <td>${boleto.corrida.origen}</td>
+                                  <td>${boleto.corrida.destino}</td>
+                                  <td>${boleto.corrida.fecha}</td>
+                                  <td>${horaSalidaFormatted}</td>
+                                  <td>${boleto.num_asientos}</td>
+                                  <td>${boleto.fecha_compra}</td>
+                                  <td>${boleto.monto}</td>
+                                  <td>${boleto.descuento}</td>
+                                  <td>${boleto.estado === "1" ? "Activo" : "Cancelado"}</td>
+                                </tr>
+                                `;
+                              }
+                              )
+                              .join("")}
+                            </tbody>
+                    </table>
+                `;
+            };
+
+            const renderGrafico = (boletos) => {
+                const ctx = document.getElementById("graficoMontos").getContext("2d");
+
+                // Agrupar montos por id_corrida y asociar origen-destino
+                const montosPorCorrida = boletos.reduce((acc, boleto) => {
+                    const key = `${boleto.corrida.id}`; // Usar id_corrida como clave
+                    const label = `${boleto.corrida.origen} - ${boleto.corrida.destino}`; // Etiqueta origen-destino
+
+                    if (!acc[key]) {
+                        acc[key] = { label, monto: 0 };
+                    }
+                    acc[key].monto += parseFloat(boleto.monto);
+                    return acc;
+                }, {});
+
+                const labels = Object.values(montosPorCorrida).map((item) => item.label); // Etiquetas origen-destino
+                const data = Object.values(montosPorCorrida).map((item) => item.monto); // Montos totales
+
+                // Destruir el gráfico anterior si existe
+                if (chartInstance) {
+                    chartInstance.destroy();
+                }
+
+                // Crear un nuevo gráfico
+                chartInstance = new Chart(ctx, {
+                    type: "bar",
+                    data: {
+                        labels: labels, // Mostrar origen-destino como etiquetas
+                        datasets: [
+                            {
+                                label: "Monto Total por Corrida",
+                                data: data,
+                                backgroundColor: "rgba(75, 192, 192, 0.2)",
+                                borderColor: "rgba(75, 192, 192, 1)",
+                                borderWidth: 1,
+                            },
+                        ],
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                            },
+                        },
+                    },
+                });
+            };
+
+            const renderGraficoAsientosVendidos = (boletos) => {
+                const ctx = document.getElementById("graficoVendidos").getContext("2d");
+
+                // Agrupar cantidad de asientos vendidos por id_corrida y asociar origen-destino
+                const asientosPorCorrida = boletos.reduce((acc, boleto) => {
+                    const key = `${boleto.corrida.id}`; // Usar id_corrida como clave
+                    const label = `${boleto.corrida.origen} - ${boleto.corrida.destino}`; // Etiqueta origen-destino
+
+                    if (!acc[key]) {
+                        acc[key] = { label, asientos: 0 };
+                    }
+                    acc[key].asientos += parseInt(boleto.num_asientos); // Sumar la cantidad de asientos vendidos
+                    return acc;
+                }, {});
+
+                const labels = Object.values(asientosPorCorrida).map((item) => item.label); // Etiquetas origen-destino
+                const data = Object.values(asientosPorCorrida).map((item) => item.asientos); // Cantidad de asientos vendidos
+
+                // Destruir el gráfico anterior si existe
+                if (chartInstanceAsientosVendidos) {
+                    chartInstanceAsientosVendidos.destroy();
+                }
+
+                // Crear un nuevo gráfico
+                chartInstanceAsientosVendidos = new Chart(ctx, {
+                    type: "bar",
+                    data: {
+                        labels: labels, // Mostrar origen-destino como etiquetas
+                        datasets: [
+                            {
+                                label: "Asientos Vendidos por Corrida",
+                                data: data,
+                                backgroundColor: "rgba(54, 162, 235, 0.2)",
+                                borderColor: "rgba(54, 162, 235, 1)",
+                                borderWidth: 1,
+                            },
+                        ],
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                            },
+                        },
+                    },
+                });
+            };
+
+            // Manejar el evento del botón "Aplicar Filtros"
+            document.querySelector("#aplicarFiltros").addEventListener("click", () => {
+                const fechaInicio = document.querySelector("#fechaInicio").value;
+                const fechaFin = document.querySelector("#fechaFin").value;
+                const estado = document.querySelector("#estado").value;
+                const idCorrida = document.querySelector("#idCorrida").value;
+
+                const filtros = {};
+                if (fechaInicio) filtros.fecha_inicio = fechaInicio;
+                if (fechaFin) filtros.fecha_fin = fechaFin;
+                if (estado) filtros.estado = parseInt(estado);
+                if (idCorrida) filtros.id_corrida = parseInt(idCorrida);
+
+                fetchReportesBoletos(filtros);
+            });
+        });
+    </script>
 </body>
 </html>
