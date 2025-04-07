@@ -32,7 +32,7 @@ function login(email, password) {
                 const rol = parseInt(data.rol);
                 localStorage.setItem("idU", data.id);
                 if (rol === 2) {
-                    window.location.href = "vistas/admin/index1.html";
+                    window.location.href = "../admin/index1.html";
                 } else if (rol === 3) {
                     window.location.href = "vistas/admin/indexO.html";
                 } else {
