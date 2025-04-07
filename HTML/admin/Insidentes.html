@@ -49,44 +49,62 @@
 </body>
 
 <script>
-    const token = localStorage.getItem('token');
-    const tbody = document.querySelector("tbody");
+  document.addEventListener("DOMContentLoaded", async () => {
+    const token = localStorage.getItem("token"); // Obtén el token del localStorage
 
-    function loadIncidentes() {
-        fetch("http://127.0.0.1:8000/api/incidentes", {
-            method: "POST",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Content-Type": "application/json"
-            }
-        })
-        .then(response => {
-            if (!response.ok) throw new Error('Error al cargar incidentes');
-            return response.json();
-        })
-        .then(data => {
-            tbody.innerHTML = data.map(incidente => `
-                <tr>
-                    <td>${incidente.id}</td>
-                    <td>${incidente.tipoIncidente}</td>
-                    <td>${incidente.descripcion}</td>
-                    <td>
-                        ${incidente.evidencia ? 
-                            `<img src="${incidente.evidencia}" width="100">` : 
-                            'Sin evidencia'}
-                    </td>
-                    <td>${incidente.tiempoRetrasoMinutos} min</td>
-                    <td>${incidente.autobusMatricula}</td>
-                    <td>${incidente.corridaNumero}</td>
-                </tr>
-            `).join('');
-        })
-        .catch(error => {
-            console.error("Error:", error);
-            tbody.innerHTML = `<tr><td colspan="7">Error al cargar los incidentes</td></tr>`;
-        });
+    if (!token) {
+      console.error("No se encontró un token en el localStorage.");
+      return;
     }
-    document.addEventListener('DOMContentLoaded', loadIncidentes);
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/listarIncidentes", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ token: token }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error en la solicitud: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+
+      // Procesar los datos y formatear la fecha y el tiempo de retraso
+      const incidentes = data.incidentes.map(incidente => ({
+        id: incidente.id,
+        tipo_incidencia: incidente.tipo_incidencia,
+        descripcion: incidente.descripcion,
+        evidencia: incidente.evidencia,
+        tiempo_estima_retraso: incidente.tiempo_estima_retraso.slice(0, 5), // Solo horas y minutos
+        fecha: incidente.fecha.split(" ")[0], // Solo la fecha
+        id_autobus: incidente.id_autobus,
+        id_corrida: incidente.id_corrida
+      }));
+
+      // Insertar los datos en la tabla
+      const tbody = document.querySelector(".user-table__data tbody");
+      tbody.innerHTML = ""; // Limpiar contenido previo
+
+      incidentes.forEach(incidente => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${incidente.id}</td>
+          <td>${incidente.tipo_incidencia}</td>
+          <td>${incidente.descripcion}</td>
+          <td>${incidente.evidencia || "N/A"}</td>
+          <td>${incidente.tiempo_estima_retraso}</td>
+          <td>${incidente.id_autobus}</td>
+          <td>${incidente.id_corrida}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    } catch (error) {
+      console.error("Error al obtener los incidentes:", error);
+    }
+  });
 </script>
 
 </html>
