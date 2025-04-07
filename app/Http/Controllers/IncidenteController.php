@@ -60,7 +60,7 @@ class IncidenteController extends Controller
 
             if ($usuario) {
                 try {
-                    // Crear mensaje detallado para el usuario
+                    // Crear mensaje detallado para el usuario>>
                     $mensaje = "¡Hola {$usuario->name}!\n";
                     $mensaje .= "Incidente registrado en tu corrida:\n";
                     $mensaje .= "Tipo de incidencia: {$validated['tipo_incidencia']}\n";

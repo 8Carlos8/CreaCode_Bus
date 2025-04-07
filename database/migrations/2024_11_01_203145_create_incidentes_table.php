@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_corrida')->nullable();
             $table->string('tipo_incidencia');
             $table->text('descripcion');
-            $table->binary('evidencia');
+            $table->string('evidencia')->nullable();
             $table->time('tiempo_estima_retraso');
             $table->dateTime('fecha');
             $table->timestamps();
