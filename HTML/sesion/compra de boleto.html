@@ -592,7 +592,7 @@ function getCorridaDetalles(idCorrida) {
           seatDiv.classList.add("seat");
           seatDiv.dataset.seat = asiento.numero;
           seatDiv.dataset.estado = asiento.estado;
-          seatDiv.style.backgroundImage = "url('../../recursos/img/SolarChairBoldDuotone.svg')"; // Imagen para asientos disponibles
+          seatDiv.style.backgroundImage = "url('../sesion/imgs/SolarChairBoldDuotone.svg')"; // Imagen para asientos disponibles
 
           if (asiento.estado === "ocupado") {
               seatDiv.classList.add("occupied");

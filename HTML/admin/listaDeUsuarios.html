@@ -61,10 +61,7 @@
                                             <td>${usuario.email}</td>
                                             <td>${usuario.telefono}</td>
                                             <td>${usuario.email_verified_at || 'No verificado'}</td>
-                                            <td class="user-table__actions">
-                                                <button class="user-table__button user-table__button--edit" onclick="editarUsuario(${usuario.id})">Editar</button>
-                                                <button class="user-table__button user-table__button--delete" onclick="eliminarUsuario(${usuario.id})">Eliminar</button>
-                                            </td>
+
                                         </tr>
                                     `;
                                     tableBody.innerHTML += row;
